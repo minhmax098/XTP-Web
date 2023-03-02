@@ -1,0 +1,149 @@
+{
+  "hello": {
+    "world": "Xin chào {{name}}"
+  },
+  "common": {
+    "action": {
+      "signin": "Đăng nhập",
+      "goBack": "Quay lại"
+    },
+    "form": {
+      "fullName": "Họ tên",
+      "email": "Email",
+      "phoneNumber": "Số điện thoại",
+      "password": "Mật khẩu",
+      "verificationCode": "Mã xác nhận",
+      "confirmPassword": "Xác nhận mật khẩu"
+    },
+    "other": {
+      "about": "Giới thiệu",
+      "feature": "Tính năng",
+      "support": "Hỗ trợ",
+      "contact": "Liên hệ",
+      "address": "Địa chỉ",
+      "hotline": "Hotline",
+      "email": "Email",
+      "product": "Sản phẩm",
+      "aboutUs": "Về chúng tôi"
+    },
+    "validation": {
+      "required": "Vui lòng nhập {{name}}",
+      "passwordStrength": "Mật khẩu không đủ mạnh",
+      "matchPassword": "Xác nhận mật khẩu không trùng khớp",
+      "unreadPolicy": "Vui lòng chọn để tiếp tục"
+    }
+  },
+  "landing": {
+    "layout": {
+      "learnMore": "Giới thiệu chung",
+      "checkOrder": "Trải nghiệm",
+      "servicePrice": "Lợi ích",
+      "contractConfirmation": "Trải nghiệm",
+      "termOfUse": "Điều khoản sử dụng",
+      "securityPolicy": "Chính sách bảo mật",
+      "siteMap": "SiteMap",
+      "companyName": "Tổng Công ty Giải Pháp Doanh Nghiệp Viettel (Viettel Solutions)",
+      "companyBranch": "Chi nhánh Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "businessRegistrationNumber": "Số ĐKKD",
+      "businessRegistrationNumberValue": "0100109106-476 do Sở Kế hoạch và Đầu tư Thành phố Hà Nội cấp lần đầu ngày 26/09/2018, sửa đổi lần thứ 2 ngày 22/07/2019.",
+      "pricePolicy": "Chính sách giá",
+      "paymentPolicy": "Quy định về hình thức thanh toán",
+      "productIntro": "Giới thiệu dịch vụ",
+      "operatingRegulation": "Quy chế hoạt động"
+    },
+    "homepage": {
+      "intro1": "3D 360/3D Tour",
+      "intro2": "Kiến tạo bản sao trên thế giới thực trên Web/App, tương tác 3D/360",
+      "intro3": "Trải nghiệm dùng thử miễn phí",
+      "benefitPrepend1": "Lợi ích cho cá nhân và doanh nghiệp",
+      "benefitTitle1": "Quảng bá du lịch",
+      "benefitDesc1": "Công tác xúc tiến quảng bá còn nhiều hạn chế, chưa chuyên nghiệp, chua bài bản, chưa hiệu quả, mới quảng bá hình ảnh chung dưới dạng 2D, chưa tạo được tiếng vang và sức hấp dẫn cho từng khu du lịch",
+      "benefitTitle2": "Bảo mật, an toàn nội dung và độ tin cậy cao",
+      "benefitDesc2": "Các phương pháp truyền thống chưa đạt được tối đa độ chân thực các địa điểm tham quan nổi tiếng.",
+      "benefitTitle3": "Tích hợp đa phương tiện, phục vụ chuyển đổi số",
+      "benefitDesc3": "Đang thiếu đồng bộ về phát triển cơ sở hạ tầng và chưa chuyển hướng sang công nghệ để đáp ứng hành vi của du khách. Mọi thông tin địa điểm du lịch hiện tại vẫn còn rời rạc và chưa có sự kết nối, tích hợp thông minh.",
+      "benefitTitle4": "Chuyển đổi cách bạn tiếp cận và quản lý tài sản của bạn bằng nền tảng digital twin",
+      "benefitDesc4": "Cung cấp giải pháp chuyển đổi số phù hợp, hiệu quả cho chính phủ, doanh nghiệp thông qua việc kết hợp nhiều công nghệ 4.0 tiên tiến nhất hiện nay. Tạo ra các sản phẩm mang tính cách mạng cho người Việt như bản đồ du lịch, thành phố thông mình,...",
+      "featurePrepend1": "Tính năng của dịch vụ",
+      "featurePrepend2": "Cung cấp giải pháp VR, AR, 360, 3D,... để đưa việc quảng bá hình ảnh lên tầm cao mới",
+      "featureTitle1": "Bản đồ tổng thể",
+      "featureTitle2": "Tham quan 3D 360/3D Tour",
+      "featureTitle3": "Đa ngôn ngữ",
+      "featureTitle4": "Đo kích thước cụ thể",
+      "featureTitle5": "Tích hợp đa phương tiện VR, AR",
+      "featureTitle6": "Tương tác với mô hình 3D",
+      "featureDesc1": "Giải pháp định hình các đối tượng theo 3 chiều, cho phép tái hiện cảnh quan rõ nét và chân thực lên đến 90% so với thực tế. Công nghệ này hỗ trợ việc tái hiện chính xác hiện trạng của các vật thể, thảm thực vật, công trình, với khả năng tính toán và đo đạc kích thước.",
+      "featureDesc2": "Hình ảnh 3D/360 tái hiện không gian chân thật và ngày càng có giá trị theo thời gian, phục vụ trùng tu, phục dựng các di sản.",
+      "featureDesc3": "Cung cấp thông tin, dịch vụ đáp ứng nhu cầu khách hàng với từng ngôn ngữ cụ thể trong phần mềm.",
+      "featureDesc4": "Tương tác thực tế với thế giới 3D/360, đo kích thước thực tế với sai số +-mm.",
+      "featureDesc5": "Các ứng dụng thực tế ảo, thực tế tăng cường đưa đối tượng ảo vào môi trường thực xung quanh, có thể tương tác trực tiếp và thực tế hơn.",
+      "featureDesc6": "Một số tương tác với mô hình 3D như: xoay, di chuyển, phóng to, thu nhỏ,... với mô hình 3D, phục vụ nhu cầu người dùng.",
+      "stepPrepend1": "Giới thiệu: Đơn vị cung cấp giải pháp chuyển đổi số ứng dụng công nghệ tiên tiến",
+      "stepTitle1": "1. Upload hợp đồng",
+      "stepDesc1": "Chọn và tải file hợp đồng cần xác thực. Chúng tôi chỉ kiểm tra thông tin ký kết, không lưu lại hợp đồng",
+      "stepTitle2": "2. Chờ xử lý",
+      "stepDesc2": "Hệ thống lấy và kiểm tra thông tin ký kết của các bên trên hợp đồng có hợp lệ không.",
+      "stepTitle3": "3. Nhận thông tin",
+      "stepDesc3": "Xem chi tiết thông tin xác thực hợp đồng đã upload.",
+      "commentPrepend1": "Khách hàng của chúng tôi",
+      "commentPrepend2": "Nhiều người trong số họ được hỏi về mức độ hài lòng với dịch vụ của chúng tôi Và đây là câu trả lời của họ.",
+      "commentTitle1": "Bà Nguyễn Hương Giang",
+      "commentSubTitle1": "Giám đốc sản xuất VinID",
+      "commentDesc1": "Trong bối cảnh dịch bệnh, các nhà máy, sản xuất không thể tổ chức các tour tham quan cho khách hàng, sinh viên... Khi số hoá nhà máy trong không gian thực tế ảo, người dùng từ khắp nơi trên thế giới có thể tham quan nhà máy chỉ với một chiếc máy tính, điện thoại. Hệ thống AI có thể số hoá dữ liệu, tạo ra một vị giám đốc ảo hoặc hướng dẫn viên, dẫn mọi người đi tham quan hệ thống, trả lời trực tiếp mọi thắc mắc",
+      "commentTitle2": "Ông Nguyễn Văn Quân",
+      "commentSubTitle2": "Giám đốc sản xuất XAP",
+      "commentDesc2": "Khách tham quan có thể cảm nhận được vết xước thời gian, chỗ mòn của con dao, mảnh rách trên vạt áo - những minh chứng hùng hồn của các di chứng lịch sử. Ngoài ra, khách tham quan các phòng trưng bày có thể lựa chọn ngôn ngữ. Ngay cả khách tham quan trực tiếp, muốn xem hình ảnh dưới dạng số hoá cũng có thể quét mã QR để xem chi tiết hiện vật dưới dạng ảnh 3D",
+      "commentTitle3": "Ông Nguyễn Hồng Anh",
+      "commentSubTitle3": "Kỹ sư sản phẩm phần mềm Goggle",
+      "commentDesc3": "Các sản phẩm /dịch vụ VTS hiện đang hoạt động có thể kể đến như: Sản phẩm: Thực tế ảo 3D, bản đồ số hóa 3D, phần mềm xử lý 3D, máy quét ...",
+      "commentTitle4": "Bà Trần Thị Hà",
+      "commentSubTitle4": "Chuyên viên bán hàng",
+      "commentDesc4": "Bằng những nổ lực và một giải pháp công nghệ tuyệt vời, VTS 3D đang nhận được những đánh giá, phản hồi rất tốt đến từ những khách hàng và ..",
+      "packagePrepend1": "Lợi ích đăng ký gói",
+      "packagePrepend2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra habitant vitae enim amet purus rhoncus nisl neque ut. Quam fermentum in dignissim in vitae consectetur magna. In malesuada augue id sit cras commodo. Vulputate diam odio nibh suspendisse ut.",
+      "packageSubTitle1": "/ Mỗi tháng",
+      "packageTypeTitle1": "Gói vĩnh viễn",
+      "packageSubTitle2": "/ Mỗi tháng",
+      "packageTypeTitle2": "Gói tháng",
+      "packageSubTitle3": "/ Mỗi tháng",
+      "packageTypeTitle3": "Gói năm",
+      "supportPrepend1": "Gọi cho chúng tôi để được tư vấn trực tiếp về sản phẩm",
+      "supportPrepend2": "Trải nghiệm ngay — hoàn toàn miễn phí",
+      "supportPrepend3": "Tìm hiểu dịch vụ và trải nghiệm ngay hôm nay.",
+      "supportSubmitText": "Đăng ký dùng thử miễn phí"
+    }
+  },
+  "authentication": {
+    "layout": {
+      "welcome": "Welcome to",
+      "site": "Meta Tourism Platform",
+      "copyright": "Copyright 2023 Viettel Solutions, Inc."
+    },
+    "title": {
+      "signIn": "Đăng nhập",
+      "signUp": "Đăng ký",
+      "notification": "Thông báo",
+      "forgot": "Quên mật khẩu"
+    },
+    "form": {
+      "forgotDesc": "Nhập địa chỉ email",
+      "forgotLink": "Quên mật khẩu?",
+      "forgotAction": "Xác nhận",
+      "signUpDesc": "Bạn chưa có tài khoản?",
+      "signUpLink": "Đăng ký ngay",
+      "signUpAction": "Đăng ký",
+      "signInDesc": "Bạn đã có tài khoản?",
+      "signInLink": "Đăng nhập ngay",
+      "signInAction": "Đăng nhập",
+      "notificationDesc": "Vui lòng kiểm tra email và kích hoạt tài khoản",
+      "retryDesc": "Chưa nhận được email?",
+      "retryLink": "Thử lại",
+      "returnAction": "Quay lại đăng nhập",
+      "backAction": "Quay lại",
+      "forgotLabel": "Nhập địa chỉ email",
+      "policyDesc": "Điều khoản sử dụng.",
+      "policySeeMore": "Xem chi tiết",
+      "passwordDesc": "Mật khẩu tối thiểu 8 ký tự\nBao gồm: chữ thường, chữ hoa, số và ký tự đặc biệt."
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@viettelweb/authen/data-access": [
+        "libs/authen/data-access/src/index.ts"
+      ],
+      "@viettelweb/authen/feature": [
+        "libs/authen/feature/src/index.ts"
+      ],
+      "@viettelweb/authen/ui": [
+        "libs/authen/ui/src/index.ts"
+      ],
+      "@viettelweb/error/data-access": [
+        "libs/error/data-access/src/index.ts"
+      ],
+      "@viettelweb/error/feature": [
+        "libs/error/feature/src/index.ts"
+      ],
+      "@viettelweb/error/ui": [
+        "libs/error/ui/src/index.ts"
+      ],
+      "@viettelweb/landing/data-access": [
+        "libs/landing/data-access/src/index.ts"
+      ],
+      "@viettelweb/landing/feature": [
+        "libs/landing/feature/src/index.ts"
+      ],
+      "@viettelweb/landing/ui": [
+        "libs/landing/ui/src/index.ts"
+      ],
+      "@viettelweb/layout/data-access": [
+        "libs/layout/data-access/src/index.ts"
+      ],
+      "@viettelweb/layout/feature": [
+        "libs/layout/feature/src/index.ts"
+      ],
+      "@viettelweb/layout/ui": [
+        "libs/layout/ui/src/index.ts"
+      ],
+      "@viettelweb/share/data-access": [
+        "libs/share/data-access/src/index.ts"
+      ],
+      "@viettelweb/share/directives": [
+        "libs/share/directives/src/index.ts"
+      ],
+      "@viettelweb/share/guards": [
+        "libs/share/guards/src/index.ts"
+      ],
+      "@viettelweb/share/interceptors": [
+        "libs/share/interceptors/src/index.ts"
+      ],
+      "@viettelweb/share/pipes": [
+        "libs/share/pipes/src/index.ts"
+      ],
+      "@viettelweb/share/services": [
+        "libs/share/services/src/index.ts"
+      ],
+      "@viettelweb/share/ui": [
+        "libs/share/ui/src/index.ts"
+      ],
+      "@viettelweb/share/utils": [
+        "libs/share/utils/src/index.ts"
+      ],
+      "@viettelweb/share/validators": [
+        "libs/share/validators/src/index.ts"
+      ],
+      "@viettelweb/template/data-access": [
+        "libs/template/data-access/src/index.ts"
+      ],
+      "@viettelweb/template/feature": [
+        "libs/template/feature/src/index.ts"
+      ],
+      "@viettelweb/template/ui": [
+        "libs/template/ui/src/index.ts"
+      ],
+      "@viettelweb/welcome/data-access": [
+        "libs/welcome/data-access/src/index.ts"
+      ],
+      "@viettelweb/welcome/feature": [
+        "libs/welcome/feature/src/index.ts"
+      ],
+      "@viettelweb/welcome/ui": [
+        "libs/welcome/ui/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
+}

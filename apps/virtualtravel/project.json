@@ -1,0 +1,110 @@
+{
+  "name": "virtualtravel",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/virtualtravel/src",
+  "prefix": "viettelweb",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "baseHref": "/",
+        "outputPath": "dist/apps/virtualtravel",
+        "index": "apps/virtualtravel/src/index.html",
+        "main": "apps/virtualtravel/src/main.ts",
+        "polyfills": "apps/virtualtravel/src/polyfills.ts",
+        "tsConfig": "apps/virtualtravel/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/virtualtravel/src/favicon.ico",
+          "apps/virtualtravel/src/assets",
+          {
+            "glob": "**/*",
+            "input": "./node_modules/@ui-vts/icons-angular/icons/svg/",
+            "output": "/assets/"
+          }
+        ],
+        "styles": [
+          "apps/virtualtravel/src/styles/global.scss"
+        ],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/virtualtravel/webpack/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [],
+          "fileReplacements": [
+            {
+              "replace": "apps/virtualtravel/src/environments/environment.ts",
+              "with": "apps/virtualtravel/src/environments/environment.prod.ts"
+            },
+            {
+              "replace": "apps/virtualtravel/webpack/webpack.config.js",
+              "with": "apps/virtualtravel/webpack/webpack.config.prod.js"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "host": "localhost",
+        "port": 8000
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "virtualtravel:build:production"
+        },
+        "development": {
+          "browserTarget": "virtualtravel:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "virtualtravel:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/virtualtravel/**/*.ts",
+          "apps/virtualtravel/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "jestConfig": "apps/virtualtravel/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

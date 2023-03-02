@@ -1,0 +1,149 @@
+{
+  "hello": {
+    "world": "Hello {{name}}"
+  },
+  "common": {
+    "action": {
+      "signin": "Sign in",
+      "goBack": "Back"
+    },
+    "form": {
+      "fullName": "Full name",
+      "email": "Email",
+      "phoneNumber": "Phone number",
+      "password": "Password",
+      "verificationCode": "Verification Code",
+      "confirmPassword": "Confirm Password"
+    },
+    "other": {
+      "about": "Introduction",
+      "feature": "Feature",
+      "support": "Support",
+      "contact": "Contact",
+      "address": "Address",
+      "hotline": "Hotline",
+      "email": "Email",
+      "product": "Product",
+      "aboutUs": "About us"
+    },
+    "validation": {
+      "required": "Please enter {{name}}",
+      "passwordStrength": "Password is not strong enough",
+      "matchPassword": "Password doesn't match",
+      "unreadPolicy": "Please tick to continue"
+    }
+  },
+  "landing": {
+    "layout": {
+      "learnMore": "General introduction",
+      "checkOrder": "Experience",
+      "servicePrice": "Benefit",
+      "contractConfirmation": "Experience",
+      "termOfUse": "Term of use",
+      "securityPolicy": "Security policy",
+      "siteMap": "SiteMap",
+      "companyName": "Viettel Solutions Corporation (Viettel Solutions)",
+      "companyBranch": "Branch of Military Industry - Telecommunications Group",
+      "businessRegistrationNumber": "Business registration number",
+      "businessRegistrationNumberValue": "0100109106-476 was first issued by Hanoi Department of Planning and Investment on September 26, 2018, and revised for the second time on July 22, 2019.",
+      "pricePolicy": "Price policy",
+      "paymentPolicy": "Payment policy",
+      "productIntro": "Product introduction",
+      "operatingRegulation": "Operating regulation"
+    },
+    "homepage": {
+      "intro1": "3D 360/3D Tour",
+      "intro2": "Create real-world replicas on Web/App, 3D/360 interactive",
+      "intro3": "Sign up for a free trial",
+      "benefitPrepend1": "Benefit for Individual and Bussiness",
+      "benefitTitle1": "Simple - Saving - Increasing service quality",
+      "benefitDesc1": "Simple deployment - no infrastructure investment required. Save time - cut costs. Increase customer satisfaction when dealing with businesses.",
+      "benefitTitle2": "Security & Content Safety",
+      "benefitDesc2": "All contracts are encrypted prior to storage. Commitment to content integrity when signing by OTP or pen, meeting the requirements of the Law.",
+      "benefitTitle3": "Sign anytime - anywhere",
+      "benefitDesc3": "All contracts are encrypted prior to storage. Commitment to content integrity when signing by OTP or pen, meeting the requirements of the Law.",
+      "benefitTitle4": "Full legality",
+      "benefitDesc4": "The signed contract complies with the regulations on contracts, electronic transactions and digital signatures of the National Assembly & Government (Civil Law 2015, Law on Electronic Transactions 2005, Decree 52/2013/ND-CP, Decree 130/2018/ND-CP).",
+      "featurePrepend1": "Service feature",
+      "featurePrepend2": "Simple signing flow, easy contract validation",
+      "featureTitle1": "Overall map",
+      "featureTitle2": "3D 360/3D Tour",
+      "featureTitle3": "Multi-language",
+      "featureTitle4": "Measure specific dimensions",
+      "featureTitle5": "Integrate VR, AR multimedia",
+      "featureTitle6": "Interact with 3D models",
+      "featureDesc1": "The solution shapes objects in 3 dimensions, allowing to reproduce the landscape clearly and realistically up to 90% of reality. This technology supports the accurate reproduction of the current state of the objects. objects, vegetation, structures, with the ability to calculate and measure dimensions.",
+      "featureDesc2": "The 3D/360 image reproduces the true space and becomes increasingly valuable over time, serving the restoration and restoration of heritage sites.",
+      "featureDesc3": "Provide information and services to meet customer needs with each specific language in the software.",
+      "featureDesc4": "Really interact with the 3D/360 world, measure actual dimensions with +-mm error.",
+      "featureDesc5": "Virtual reality, augmented reality applications that bring virtual objects into real surroundings, can interact more directly and realistically.",
+      "featureDesc6": "Some interactions with 3D models such as: rotate, move, zoom in, zoom out, ... with 3D models, serving user needs.",
+      "stepPrepend1": "Introduction: A digital transformation solution provider applying advanced technology",
+      "stepTitle1": "1. Upload contract",
+      "stepDesc1": "Select and download the contract file to be verified. We only check the signed information, not save the contract",
+      "stepTitle2": "2. Wait for processing",
+      "stepDesc2": "The system retrieves and checks whether the signed information of the parties on the contract is valid.",
+      "stepTitle3": "3. Get information",
+      "stepDesc3": "View details of uploaded contract validation information.",
+      "commentPrepend1": "Our customer",
+      "commentPrepend2": "Many of them are asked about their satisfaction with our service And here are their answers.",
+      "commentTitle1": "Mrs Nguyen Huong Giang",
+      "commentSubTitle1": "VinID Production Manager",
+      "commentDesc1": "In the context of the epidemic, factories and production cannot organize tours for customers, students... When digitizing factories in virtual reality space, users from all over the world can You can visit the factory with just a computer or phone. The AI system can digitize data, create a virtual director or guide, lead people on a tour of the system, answer all questions directly.",
+      "commentTitle2": "Mr Nguyen Van Quan",
+      "commentSubTitle2": "XAP Production Manager",
+      "commentDesc2": "Visitors can feel the scratches of time, the wear of the knife, the torn pieces on the lapel - eloquent proofs of historical vestiges. In addition, visitors to the galleries can select languages. Even direct visitors who want to see the images in digital form can scan the QR code to see the details of the artifacts in the form of 3D images.",
+      "commentTitle3": "Mr Nguyen Hong Anh",
+      "commentSubTitle3": "Google Software Engineer",
+      "commentDesc3": "Currently operating VTS products/services can be listed as: Products: 3D virtual reality, 3D digitized maps, 3D processing software, scanners...",
+      "commentTitle4": "Mrs Tran Thi Ha",
+      "commentSubTitle4": "Sales specialist",
+      "commentDesc4": "With efforts and a great technology solution, VTS 3D is receiving very good reviews and feedback from customers and ..",
+      "packagePrepend1": "Package benefit",
+      "packagePrepend2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra habitant vitae enim amet purus rhoncus nisl neque ut. Quam fermentum in dignissim in vitae consectetur magna. In malesuada augue id sit cras commodo. Vulputate diam odio nibh suspendisse ut.",
+      "packageSubTitle1": "/ Per month",
+      "packageTypeTitle1": "Lifetime",
+      "packageSubTitle2": "/ Per month",
+      "packageTypeTitle2": "Monthly",
+      "packageSubTitle3": "/ Per month",
+      "packageTypeTitle3": "Yearly",
+      "supportPrepend1": "Call us for direct product consultation",
+      "supportPrepend2": "Try it now — it's free",
+      "supportPrepend3": "Learn about the service and experience today.",
+      "supportSubmitText": "Sign up for a free trial"
+    }
+  },
+  "authentication": {
+    "layout": {
+      "welcome": "Welcome to",
+      "site": "Meta Tourism Platform",
+      "copyright": "Copyright 2023 Viettel Solutions, Inc."
+    },
+    "title": {
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "notification": "Notification",
+      "forgot": "Forgot Password"
+    },
+    "form": {
+      "forgotDesc": "Enter the registered email",
+      "forgotLink": "Forgot password?",
+      "forgotAction": "Submit",
+      "signUpDesc": "Do you have an account?",
+      "signUpLink": "Sign up now",
+      "signUpAction": "Sign up",
+      "signInDesc": "Already have an account?",
+      "signInLink": "Sign in now",
+      "signInAction": "Sign In",
+      "notificationDesc": "Please check your email registion and account activation before using",
+      "retryDesc": "Haven't received email yet?",
+      "retryLink": "Retry",
+      "returnAction": "Return to Login page",
+      "backAction": "Back",
+      "forgotLabel": "Enter the registered email",
+      "policyDesc": "Agree to our terms of use.",
+      "policySeeMore": "See Detail",
+      "passwordDesc": "Password should be at least 8 characters\nInclude: lower case letters, upper case letters, numbers and special characters."
+    }
+  }
+}
