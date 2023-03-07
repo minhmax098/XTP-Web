@@ -11,8 +11,8 @@
     }
   ],
   "compilerOptions": {
+    "target": "es2020",
     "noImplicitReturns": false,
-    "strictPropertyInitialization": false,
-    "target": "es2020"
+    "strictPropertyInitialization": false
   }
 }

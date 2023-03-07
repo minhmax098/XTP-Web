@@ -90,6 +90,15 @@
       "@viettelweb/template/ui": [
         "libs/template/ui/src/index.ts"
       ],
+      "@viettelweb/virtual-tour-360/data-access": [
+        "libs/virtual-tour-360/data-access/src/index.ts"
+      ],
+      "@viettelweb/virtual-tour-360/feature": [
+        "libs/virtual-tour-360/feature/src/index.ts"
+      ],
+      "@viettelweb/virtual-tour-360/ui": [
+        "libs/virtual-tour-360/ui/src/index.ts"
+      ],
       "@viettelweb/welcome/data-access": [
         "libs/welcome/data-access/src/index.ts"
       ],

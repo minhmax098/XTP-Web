@@ -1,23 +1,34 @@
-import { Route } from '@angular/router';
+import { Route } from "@angular/router";
 
 export const ROUTES: Route[] = [
-    { path: 'authen', loadChildren: () => import('@viettelweb/authen/feature').then(c => c.AuthenFeatureModule) },
-  { path: 'landing', loadChildren: () => import('@viettelweb/landing/feature').then(c => c.LandingFeatureModule) },
   {
-    path: 'error',
+    path: "virtual-tour",
     loadChildren: () =>
-      import('@viettelweb/error/feature').then(
-        (c) => c.ErrorFeatureModule
+      import("@viettelweb/virtual-tour-360/feature").then(
+        (c) => c.VirtualTourFeatureModule
       ),
   },
   {
-    path: 'welcome',
+    path: "authen",
     loadChildren: () =>
-      import('@viettelweb/welcome/feature').then(
-        (m) => m.WelcomeFeatureModule
-      ),
+      import("@viettelweb/authen/feature").then((c) => c.AuthenFeatureModule),
   },
-  { path: '**', redirectTo: '/landing/homepage' },
+  {
+    path: "landing",
+    loadChildren: () =>
+      import("@viettelweb/landing/feature").then((c) => c.LandingFeatureModule),
+  },
+  {
+    path: "error",
+    loadChildren: () =>
+      import("@viettelweb/error/feature").then((c) => c.ErrorFeatureModule),
+  },
+  {
+    path: "welcome",
+    loadChildren: () =>
+      import("@viettelweb/welcome/feature").then((m) => m.WelcomeFeatureModule),
+  },
+  { path: "**", redirectTo: "/landing/homepage" },
 ];
 
-export default ROUTES
+export default ROUTES;
