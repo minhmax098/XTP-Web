@@ -89,7 +89,6 @@ import { Viewer3DComponent } from '../viewer3-d/viewer3-d.component';
 })
 
 // @NgModule({   declarations: []})
-
 export class HomepageComponent implements OnInit, AfterViewInit {
   // #region Data
   t = (v: string) => this.translateService.instant(v);
@@ -364,6 +363,10 @@ export class HomepageComponent implements OnInit, AfterViewInit {
           height: '800px'
         },
         navbar: [],
+        touchmoveTwoFingers: false,
+        mousewheelCtrlKey: false,
+        mousewheel: false,
+        mousemove: false,
       });
 
       this.control?.addEventListener('ready', () => {
@@ -389,7 +392,8 @@ export class HomepageComponent implements OnInit, AfterViewInit {
       description: "Page 2",
     };
     this.slides[1] = {
-      url: "assets/template/landing/360vr-bureau.png",   
+      // url: "assets/template/landing/360vr-bureau.png",
+      url: "assets/template/landing/room-entreprise.jpg",
       description: "Page 3",
     };
     this.slides[2] = {
@@ -574,20 +578,19 @@ export class HomepageComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-  // Carousel change event
-  onItemChange($event: any): void {
+    // Carousel change event
+    onItemChange($event: any): void {
     // this.add3DView("https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg");
     console.log('Carousel onItemChange', $event);
 
-    // Activate the animation for each VIEWER in array
+    // Activate the animation for each Viewer in array
     // this.arr?.forEach((element, index) => {
     //   element?.animate({
     //     yaw: -Math.PI / 16,
     //     pitch: '0deg',
     //     zoom: 0,
     //     speed: '0.5rpm',
-    // }).then(() => { console.log('Animate complete !!!')});
+    // }).then(() => { console.log('Animate complete!!')});
     // })
 
     // Just for one Viewer
@@ -601,16 +604,13 @@ export class HomepageComponent implements OnInit, AfterViewInit {
 
   // Handle sphere 3D viewer
   // @ViewChildren(Viewer3DComponent, {read: ElementRef}) private listView ?: QueryList<ElementRef>;
-  
-  // @ViewChildren('viewer', {read: ElementRef}) private listView ?: QueryList<ElementRef>;
   @ViewChildren('viewer', {read: ElementRef}) private listView ?: QueryList<ElementRef>;
   
   // List contains the Viewer
   private arr = new Array<Viewer>();
 
   ngAfterViewInit() {
-    console.log("HELLO WE ARE GOING HERE !!!!" + this.listView);
-
+    console.log("Hello we're going here!!!!" + this.listView);
     // Iterate each objects inside listView and Init the default value respectively
     this.listView?.forEach((element, index) => {
       this.arr.push(new Viewer({
@@ -621,6 +621,10 @@ export class HomepageComponent implements OnInit, AfterViewInit {
           height: '800px'
         },
         navbar: [],
+        touchmoveTwoFingers: false,
+        mousewheelCtrlKey: false,
+        mousewheel: false,
+        mousemove: false,
       }));
     });
   }

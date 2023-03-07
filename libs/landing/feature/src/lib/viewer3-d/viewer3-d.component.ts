@@ -11,14 +11,11 @@ import { Viewer } from '@photo-sphere-viewer/core';
 //   styleUrls: ['./viewer3-d.component.scss']
 // })
 
-
-// 
 @Directive({
   selector: '.viewer'
 })
 
 export class Viewer3DComponent implements OnInit, AfterViewInit {
-  
   // Add argument for the tag
   // @Input() url?: string;
 
@@ -29,5 +26,4 @@ export class Viewer3DComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // console.log("3D viewer init success! " + this.url);
   }
-
 }
