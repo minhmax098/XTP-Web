@@ -20,8 +20,17 @@
         </c-carousel-inner>
       </c-carousel> -->
       <!-- </div> -->
-      <!-- <div id="viewer" style="object-fit: contain;"></div> -->
-      <div #viewer></div>
+
+      <c-carousel (itemChange)="onItemChange($event)" [interval] ="4000" transition="crossfade">
+        <c-carousel-inner>
+          <c-carousel-item *ngFor="let slide of slides">
+            <div #viewer ></div>
+            <!-- <landing-feature-viewer3-d url="{{ slide.url }}"></landing-feature-viewer3-d> -->
+            <!-- <div class="viewer"></div> -->
+          </c-carousel-item>
+        </c-carousel-inner>
+      </c-carousel>
+
     </div>
 
     <div
@@ -47,7 +56,6 @@
       }}
       </button>
     </div>
-
 
   </section>
   <section class="home-benefit">

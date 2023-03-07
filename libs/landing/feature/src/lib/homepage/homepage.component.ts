@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { NgModule, Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnChanges, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VtsSpaceModule } from '@ui-vts/ng-vts/space';
 import { VtsTypographyModule } from '@ui-vts/ng-vts/typography';
@@ -30,7 +30,10 @@ import {
 
 // import * as THREE from 'three';
 
-import { Viewer } from '@photo-sphere-viewer/core';
+import { Navbar, Viewer } from '@photo-sphere-viewer/core';
+import { once } from 'events';
+
+import { Viewer3DComponent } from '../viewer3-d/viewer3-d.component';
 
 @Component({
   selector: 'landing-feature-homepage',
@@ -53,7 +56,7 @@ import { Viewer } from '@photo-sphere-viewer/core';
     NgFor,
     FormsModule,
     CarouselModule, 
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './homepage.component.html',
   styleUrls: ['./homepage.component.scss'],
@@ -84,6 +87,8 @@ import { Viewer } from '@photo-sphere-viewer/core';
     ]),
   ],
 })
+
+// @NgModule({   declarations: []})
 
 export class HomepageComponent implements OnInit, AfterViewInit {
   // #region Data
@@ -222,7 +227,7 @@ export class HomepageComponent implements OnInit, AfterViewInit {
         title: '325.000đ',
         subTitle: this.t('landing.homepage.packageSubTitle1'),
         typeTitle: this.t('landing.homepage.packageTypeTitle1'),
-        typeSubTitle: 'Lorem Ipsum is simply dummy',
+        typeSubTitle: 'Gói dịch vụ vĩnh viễn',
         features: [
           {
             title: 'Lorem Ipsum is simply dummy text of the',
@@ -259,7 +264,7 @@ export class HomepageComponent implements OnInit, AfterViewInit {
         title: '199.000đ',
         subTitle: this.t('landing.homepage.packageSubTitle2'),
         typeTitle: this.t('landing.homepage.packageTypeTitle2'),
-        typeSubTitle: 'Lorem Ipsum is simply dummy',
+        typeSubTitle: 'Gói dịch vụ tháng',
         features: [
           {
             title: 'Lorem Ipsum is simply dummy text of the',
@@ -297,7 +302,7 @@ export class HomepageComponent implements OnInit, AfterViewInit {
         title: '259.000đ',
         subTitle: this.t('landing.homepage.packageSubTitle3'),
         typeTitle: this.t('landing.homepage.packageTypeTitle3'),
-        typeSubTitle: 'Lorem Ipsum is simply dummy',
+        typeSubTitle: 'Gói dịch vụ năm',
         features: [
           {
             title: 'Lorem Ipsum is simply dummy text of the',
@@ -337,6 +342,7 @@ export class HomepageComponent implements OnInit, AfterViewInit {
   breakpoint$ = this.vtsBreakpoint.subscribe(gridResponsiveMap, true);
 
   @ViewChild('viewer', {read: ElementRef}) private viewer?: ElementRef;
+  
   control?: Viewer
 
   constructor(
@@ -348,53 +354,47 @@ export class HomepageComponent implements OnInit, AfterViewInit {
   slides: any[] = new Array(3).fill({id: -1, src: '', title: '', subtitle: ''});
 
   // add 3d View 
-  add3DView(){
+  add3DView(url: string){
     if (this.viewer)
       this.control = new Viewer({
         container: this.viewer.nativeElement,
-        panorama: "https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg",
+        panorama: url,
         size: {
           width: '100vw',
           height: '800px'
-        }
+        },
+        navbar: [],
       });
-  }
 
-  animate(){
-    this.control?.animate({
-      yaw: Math.PI / 2,
-      pitch: "20deg",
-      zoom: 300,
-      speed: "1rpm"
-    });
-    // .then(());
-  }
+      this.control?.addEventListener('ready', () => {
+        this.control?.animate({
+            yaw: -Math.PI / 16,
+            pitch: '0deg',
+            zoom: 0,
+            speed: '0.5rpm',
+        }).then(() => { console.log('Animate complete !!!')});
 
-  ngAfterViewInit(): void {
-    this.add3DView();
-    this.animate();
+      // this.control?.rotate({
+      //   textureX: 1500, 
+      //   textureY: 1000
+      // });
+      }, {});
   }
 
   ngOnInit(): void {
     this.addIcon();
 
     this.slides[0] = {
-      id: 0,
-      src: 'assets/template/landing/image-360.png',
-      title: 'First slide',
-      subtitle: 'Kiến tạo bản sao trên thế giới thực trên Web/App, tương tác 3D/360'
+      url: "https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg",
+      description: "Page 2",
     };
     this.slides[1] = {
-      id: 1,
-      src: 'assets/template/landing/web360-vts.png',
-      title: 'Second slide',
-      subtitle: 'Cho phép tạo ra một bản sao thế giới thực trong thế giới số, giúp bạn tiếp cận khách hàng'
-    }
+      url: "assets/template/landing/360vr-bureau.png",   
+      description: "Page 3",
+    };
     this.slides[2] = {
-      id: 2,
-      src: 'assets/template/landing/image-360.png',
-      title: 'Third slide',
-      subtitle: 'Giúp bạn tiếp cận khách hàng nhiều nơi trên thế giới mà không bị rào cản không gian và thời gian'
+      url: "assets/template/landing/Canyon-National-Park.jpg",
+      description: "Page 4",
     }
   }
 
@@ -574,7 +574,54 @@ export class HomepageComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  // Carousel change event
   onItemChange($event: any): void {
+    // this.add3DView("https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg");
     console.log('Carousel onItemChange', $event);
+
+    // Activate the animation for each VIEWER in array
+    // this.arr?.forEach((element, index) => {
+    //   element?.animate({
+    //     yaw: -Math.PI / 16,
+    //     pitch: '0deg',
+    //     zoom: 0,
+    //     speed: '0.5rpm',
+    // }).then(() => { console.log('Animate complete !!!')});
+    // })
+
+    // Just for one Viewer
+    this.arr[$event]?.animate({
+        yaw: -Math.PI / 16,
+        pitch: '0deg',
+        zoom: 0,
+        speed: '0.5rpm',
+    }).then(() => {console.log('Animate complete !!! for ', $event);});
+  }
+
+  // Handle sphere 3D viewer
+  // @ViewChildren(Viewer3DComponent, {read: ElementRef}) private listView ?: QueryList<ElementRef>;
+  
+  // @ViewChildren('viewer', {read: ElementRef}) private listView ?: QueryList<ElementRef>;
+  @ViewChildren('viewer', {read: ElementRef}) private listView ?: QueryList<ElementRef>;
+  
+  // List contains the Viewer
+  private arr = new Array<Viewer>();
+
+  ngAfterViewInit() {
+    console.log("HELLO WE ARE GOING HERE !!!!" + this.listView);
+
+    // Iterate each objects inside listView and Init the default value respectively
+    this.listView?.forEach((element, index) => {
+      this.arr.push(new Viewer({
+        container: element.nativeElement!,
+        panorama: this.slides[index].url,
+        size: {
+          width: '100vw',
+          height: '800px'
+        },
+        navbar: [],
+      }));
+    });
   }
 }

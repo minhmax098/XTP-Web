@@ -67,12 +67,12 @@ export class LandingLayoutComponent implements OnInit, OnDestroy {
         primary: false,
         onClick: () => {this.scrollToElementId('support')}
       },
-      {
-        // experience
-        name: this.t('landing.layout.contractConfirmation'),
-        primary: true,
-        onClick: () => {this.scrollToElementId('contractConfirm')}
-      },
+      // {
+      //   // experience
+      //   name: this.t('landing.layout.contractConfirmation'),
+      //   primary: true,
+      //   onClick: () => {this.scrollToElementId('contractConfirm')}
+      // },
       {
         // signin
         name: this.t('common.action.signin'),

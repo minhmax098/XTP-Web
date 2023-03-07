@@ -36,7 +36,6 @@
   "landing": {
     "layout": {
       "learnMore": "Giới thiệu chung",
-      "checkOrder": "Trải nghiệm",
       "servicePrice": "Lợi ích",
       "contractConfirmation": "Trải nghiệm",
       "termOfUse": "Điều khoản sử dụng",
@@ -52,7 +51,7 @@
       "operatingRegulation": "Quy chế hoạt động"
     },
     "homepage": {
-      "intro1": "3D 360/3D Tour",
+      "intro1": "360/3D Tour",
       "intro2": "Kiến tạo bản sao trên thế giới thực trên Web/App, tương tác 3D/360",
       "intro3": "Trải nghiệm dùng thử miễn phí",
       "benefitPrepend1": "Lợi ích cho cá nhân và doanh nghiệp",
@@ -67,7 +66,7 @@
       "featurePrepend1": "Tính năng của dịch vụ",
       "featurePrepend2": "Cung cấp giải pháp VR, AR, 360, 3D,... để đưa việc quảng bá hình ảnh lên tầm cao mới",
       "featureTitle1": "Bản đồ tổng thể",
-      "featureTitle2": "Tham quan 3D 360/3D Tour",
+      "featureTitle2": "Tham quan 360/3D Tour",
       "featureTitle3": "Đa ngôn ngữ",
       "featureTitle4": "Đo kích thước cụ thể",
       "featureTitle5": "Tích hợp đa phương tiện VR, AR",
@@ -100,7 +99,7 @@
       "commentSubTitle4": "Chuyên viên bán hàng",
       "commentDesc4": "Bằng những nổ lực và một giải pháp công nghệ tuyệt vời, VTS 3D đang nhận được những đánh giá, phản hồi rất tốt đến từ những khách hàng và ..",
       "packagePrepend1": "Lợi ích đăng ký gói",
-      "packagePrepend2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra habitant vitae enim amet purus rhoncus nisl neque ut. Quam fermentum in dignissim in vitae consectetur magna. In malesuada augue id sit cras commodo. Vulputate diam odio nibh suspendisse ut.",
+      "packagePrepend2": "Quy mô gọn nhẹ, phù hợp với cá nhân kinh doanh nhỏ lẻ, được áp dụng chế độ ưu đãi",
       "packageSubTitle1": "/ Mỗi tháng",
       "packageTypeTitle1": "Gói vĩnh viễn",
       "packageSubTitle2": "/ Mỗi tháng",

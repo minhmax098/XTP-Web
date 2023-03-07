@@ -36,7 +36,6 @@
   "landing": {
     "layout": {
       "learnMore": "General introduction",
-      "checkOrder": "Experience",
       "servicePrice": "Benefit",
       "contractConfirmation": "Experience",
       "termOfUse": "Term of use",
@@ -52,7 +51,7 @@
       "operatingRegulation": "Operating regulation"
     },
     "homepage": {
-      "intro1": "3D 360/3D Tour",
+      "intro1": "360/3D Tour",
       "intro2": "Create real-world replicas on Web/App, 3D/360 interactive",
       "intro3": "Sign up for a free trial",
       "benefitPrepend1": "Benefit for Individual and Bussiness",
@@ -67,7 +66,7 @@
       "featurePrepend1": "Service feature",
       "featurePrepend2": "Simple signing flow, easy contract validation",
       "featureTitle1": "Overall map",
-      "featureTitle2": "3D 360/3D Tour",
+      "featureTitle2": "360/3D Tour",
       "featureTitle3": "Multi-language",
       "featureTitle4": "Measure specific dimensions",
       "featureTitle5": "Integrate VR, AR multimedia",
@@ -100,7 +99,7 @@
       "commentSubTitle4": "Sales specialist",
       "commentDesc4": "With efforts and a great technology solution, VTS 3D is receiving very good reviews and feedback from customers and ..",
       "packagePrepend1": "Package benefit",
-      "packagePrepend2": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra habitant vitae enim amet purus rhoncus nisl neque ut. Quam fermentum in dignissim in vitae consectetur magna. In malesuada augue id sit cras commodo. Vulputate diam odio nibh suspendisse ut.",
+      "packagePrepend2": "Compact scale, suitable for individuals and small businesses, preferential regimes are applied",
       "packageSubTitle1": "/ Per month",
       "packageTypeTitle1": "Lifetime",
       "packageSubTitle2": "/ Per month",

@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 
 export const ROUTES: Route[] = [
+    { path: 'map', loadChildren: () => import('@viettelweb/map/feature').then(c => c.MapFeatureModule) },
     { path: 'authen', loadChildren: () => import('@viettelweb/authen/feature').then(c => c.AuthenFeatureModule) },
   { path: 'landing', loadChildren: () => import('@viettelweb/landing/feature').then(c => c.LandingFeatureModule) },
   {
@@ -20,4 +21,4 @@ export const ROUTES: Route[] = [
   { path: '**', redirectTo: '/landing/homepage' },
 ];
 
-export default ROUTES
+export default ROUTES;

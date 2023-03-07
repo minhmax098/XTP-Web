@@ -54,6 +54,15 @@
       "@viettelweb/layout/ui": [
         "libs/layout/ui/src/index.ts"
       ],
+      "@viettelweb/map/data-access": [
+        "libs/map/data-access/src/index.ts"
+      ],
+      "@viettelweb/map/feature": [
+        "libs/map/feature/src/index.ts"
+      ],
+      "@viettelweb/map/ui": [
+        "libs/map/ui/src/index.ts"
+      ],
       "@viettelweb/share/data-access": [
         "libs/share/data-access/src/index.ts"
       ],
