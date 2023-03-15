@@ -8,7 +8,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { NgbCarousel, NgbCarouselModule, NgbSlideEvent, NgbSlideEventSource } from '@ng-bootstrap/ng-bootstrap';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CarouselModule } from '@coreui/angular';
+import { CarouselComponent, CarouselModule } from '@coreui/angular';
 import { RouterModule } from '@angular/router';
 
 import {
@@ -88,7 +88,7 @@ import { Viewer3DComponent } from '../viewer3-d/viewer3-d.component';
   ],
 })
 
-// @NgModule({   declarations: []})
+// @NgModule({ declarations: []})
 export class HomepageComponent implements OnInit, AfterViewInit {
   // #region Data
   t = (v: string) => this.translateService.instant(v);
@@ -161,25 +161,6 @@ export class HomepageComponent implements OnInit, AfterViewInit {
   );
 
   // About company 
-  step$ = this.emitter.pipe(
-    map(() => [
-      {
-        title: this.t('landing.homepage.stepTitle1'),
-        description: this.t('landing.homepage.stepDesc1'),
-        icon: 'Step1:import',
-      },
-      {
-        title: this.t('landing.homepage.stepTitle2'),
-        description: this.t('landing.homepage.stepDesc2'),
-        icon: 'Step2:import',
-      },
-      {
-        title: this.t('landing.homepage.stepTitle3'),
-        description: this.t('landing.homepage.stepDesc3'),
-        icon: 'Step3:import',
-      },
-    ])
-  );
 
   // Comment customer 
   comment$ = this.emitter.pipe(
@@ -341,6 +322,7 @@ export class HomepageComponent implements OnInit, AfterViewInit {
   breakpoint$ = this.vtsBreakpoint.subscribe(gridResponsiveMap, true);
 
   @ViewChild('viewer', {read: ElementRef}) private viewer?: ElementRef;
+  @ViewChild(CarouselComponent) private carouselRef?: CarouselComponent;
   
   control?: Viewer
 
@@ -353,52 +335,51 @@ export class HomepageComponent implements OnInit, AfterViewInit {
   slides: any[] = new Array(3).fill({id: -1, src: '', title: '', subtitle: ''});
 
   // add 3d View 
-  add3DView(url: string){
-    if (this.viewer)
-      this.control = new Viewer({
-        container: this.viewer.nativeElement,
-        panorama: url,
-        size: {
-          width: '100vw',
-          height: '800px'
-        },
-        navbar: [],
-        touchmoveTwoFingers: false,
-        mousewheelCtrlKey: false,
-        mousewheel: false,
-        mousemove: false,
-      });
+  // add3DView(url: string){
+  //   if (this.viewer)
+  //     this.control = new Viewer({
+  //       container: this.viewer.nativeElement,
+  //       panorama: url,
+  //       size: {
+  //         width: '100vw',
+  //         height: '800px'
+  //       },
+  //       navbar: [],
+  //       touchmoveTwoFingers: false,
+  //       mousewheelCtrlKey: false,
+  //       mousewheel: false,
+  //       mousemove: false,
+  //     });
 
-      this.control?.addEventListener('ready', () => {
-        this.control?.animate({
-            yaw: -Math.PI / 16,
-            pitch: '0deg',
-            zoom: 0,
-            speed: '0.5rpm',
-        }).then(() => { console.log('Animate complete !!!')});
+  //     this.control?.addEventListener('ready', () => {
+  //       this.control?.animate({
+  //           yaw: -Math.PI / 16,
+  //           pitch: '20deg',
+  //           zoom: 50,
+  //           speed: '2rpm',
+  //       }).then(() => { console.log('Animate complete !!!')});
 
-      // this.control?.rotate({
-      //   textureX: 1500, 
-      //   textureY: 1000
-      // });
-      }, {});
-  }
+  //     // this.control?.rotate({
+  //     //   textureX: 1500, 
+  //     //   textureY: 1000
+  //     // });
+  //     }, {});
+  // }
 
   ngOnInit(): void {
     this.addIcon();
 
     this.slides[0] = {
       url: "https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg",
-      description: "Page 2",
+      description: "Page 1",
     };
     this.slides[1] = {
-      // url: "assets/template/landing/360vr-bureau.png",
       url: "assets/template/landing/room-entreprise.jpg",
-      description: "Page 3",
+      description: "Page 2",
     };
     this.slides[2] = {
       url: "assets/template/landing/Canyon-National-Park.jpg",
-      description: "Page 4",
+      description: "Page 3",
     }
   }
 
@@ -578,40 +559,64 @@ export class HomepageComponent implements OnInit, AfterViewInit {
     });
   }
 
-    // Carousel change event
-    onItemChange($event: any): void {
-    // this.add3DView("https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg");
-    console.log('Carousel onItemChange', $event);
+  // Carousel change event
+  onItemChange($event: any): void {
+  // this.add3DView("https://photo-sphere-viewer-data.netlify.app/assets/sphere.jpg");
+  console.log('Carousel onItemChange', $event);
 
-    // Activate the animation for each Viewer in array
-    // this.arr?.forEach((element, index) => {
-    //   element?.animate({
-    //     yaw: -Math.PI / 16,
-    //     pitch: '0deg',
-    //     zoom: 0,
-    //     speed: '0.5rpm',
-    // }).then(() => { console.log('Animate complete!!')});
-    // })
-
-    // Just for one Viewer
+  // Just for one Viewer
+  this.arr[$event]?.animate({
+    yaw: 0,
+    pitch: '0deg',
+    zoom: 20,
+    speed: '0.5rpm',
+  }).then(() => {
     this.arr[$event]?.animate({
-        yaw: -Math.PI / 16,
+      yaw: -Math.PI / 16,
+      pitch: '0deg',
+      zoom: 0,
+      speed: '0.5rpm',
+    }).then(() => {
+      this.arr[$event]?.animate({
+        yaw: Math.PI / 16,
         pitch: '0deg',
         zoom: 0,
         speed: '0.5rpm',
-    }).then(() => {console.log('Animate complete !!! for ', $event);});
+      }).then(() => {
+        if($event === 2)
+        {
+          this.setIndex(0);
+        }
+        else
+        {
+          this.setIndex($event + 1);
+        }
+      })  
+    });})
   }
 
   // Handle sphere 3D viewer
-  // @ViewChildren(Viewer3DComponent, {read: ElementRef}) private listView ?: QueryList<ElementRef>;
   @ViewChildren('viewer', {read: ElementRef}) private listView ?: QueryList<ElementRef>;
   
   // List contains the Viewer
   private arr = new Array<Viewer>();
 
-  ngAfterViewInit() {
+  setIndex(index: number) 
+  {
+    if (this.carouselRef) 
+    {
+      const service = (this.carouselRef as any)?.carouselService
+      if (service) 
+      {
+        service.setIndex({active: index})
+      }
+    }
+  }
+
+  ngAfterViewInit() 
+  {
     console.log("Hello we're going here!!!!" + this.listView);
-    // Iterate each objects inside listView and Init the default value respectively
+    // Iterate each objects inside listView and init the default value respectively
     this.listView?.forEach((element, index) => {
       this.arr.push(new Viewer({
         container: element.nativeElement!,
@@ -621,11 +626,36 @@ export class HomepageComponent implements OnInit, AfterViewInit {
           height: '800px'
         },
         navbar: [],
-        touchmoveTwoFingers: false,
-        mousewheelCtrlKey: false,
         mousewheel: false,
         mousemove: false,
       }));
     });
+
+    // Allow the first slide to take effect
+    var startTime = performance.now()
+    this.arr[0]?.animate({
+      yaw: 0,
+      pitch: '0deg',
+      zoom: 20,
+      speed: '0.5rpm',
+    }).then(() => {
+      this.arr[0]?.animate({
+        yaw: -Math.PI / 16,
+        pitch: '0deg',
+        zoom: 0,
+        speed: '0.5rpm',
+      }).then(() => {
+        this.arr[0]?.animate({
+          yaw: Math.PI / 16,
+          pitch: '0deg',
+          zoom: 0,
+          speed: '0.5rpm',
+        }).then(() => { console.log('Animate complete !!! for ');})
+        .then(() => {
+          this.setIndex(1)
+        })     
+      });})
+    var endTime = performance.now()
+    console.log('Call to do something took ${endTime - startTime} milliseconds')
   }
 }

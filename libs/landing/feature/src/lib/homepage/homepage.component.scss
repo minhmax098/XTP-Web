@@ -89,13 +89,24 @@
 
   &-step {
     padding: 100px var(--pd-h) 200px var(--pd-h);
-    background: url('/assets/template/landing/step-bg.svg');
+    // background: url('/assets/template/landing/step-bg.svg');
     background-repeat: no-repeat;
     background-position: 50% 55%;
 
     &-prepend {
       width: 100%;
       margin-bottom: 100px;
+    }
+
+    &-ab-intro .head-about img {
+      max-width: 40rem;
+    }
+
+    &-img {
+      max-width: 100%;
+      vertical-align: middle;
+      -o-object-fit: cover;
+      object-fit: cover;
     }
 
     @media screen and (max-width: 768px) {

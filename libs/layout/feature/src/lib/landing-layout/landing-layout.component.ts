@@ -67,6 +67,13 @@ export class LandingLayoutComponent implements OnInit, OnDestroy {
         primary: false,
         onClick: () => {this.scrollToElementId('support')}
       },
+      { 
+        // news
+        name: this.t('common.other.news'),
+        primary: false,
+        // onClick: () => {this.scrollToElementId('news')}
+        onClick: () => {this.goToPage('/landing/news/')}
+      },
       // {
       //   // experience
       //   name: this.t('landing.layout.contractConfirmation'),
