@@ -1,0 +1,25 @@
+<div class="language-picker-container">
+  <div class="language-container">
+    <div
+      [ngStyle]="{
+        backgroundImage: 'url(assets/template/map/icons/english-language.svg)'
+      }"
+      class="language"
+      (click)="handleLanguagePickerClick('1')"
+      #lang1
+    ></div>
+  </div>
+  <div class="language-container">
+    <div
+      [ngStyle]="{
+        backgroundImage:
+          'url(assets/template/map/icons/chosen-vietnamese-language.svg)',
+        width: '32px',
+        height: '32px'
+      }"
+      class="language"
+      (click)="handleLanguagePickerClick('2')"
+      #lang2
+    ></div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="input-container">
+  <div class="icon-container">
+    <img [src]="searchIcon" alt="icon" class="icon" />
+  </div>
+  <input
+    type="text"
+    class="input-field"
+    [placeholder]="placeholder"
+    [(ngModel)]="searchValue"
+    (input)="handleSearchValueChange()"
+    (focus)="handleInputFocus()"
+    (blur)="handleInputBlur()"
+  />
+</div>
+<div class="search-results" *ngIf="isShowSearchResult">
+  <div class="result-count">Không tìm thấy kết quả!</div>
+  <div class="result-list" *ngFor="let item of items; let i = index">
+    <virtual-tour-ui-search-result
+      [item_index]="i.toString()"
+      [item_name]="item.name"
+      [item_address]="item.address"
+      (on_result_item_click)="handleSearchResultItemClick(i)"
+    ></virtual-tour-ui-search-result>
+  </div>
+</div>

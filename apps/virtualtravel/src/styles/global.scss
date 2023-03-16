@@ -1,9 +1,105 @@
-@import './fonts';
-@import '@ui-vts/theme/ui-vts';
-@import '@photo-sphere-viewer/core/index';
+@import "./fonts";
+@import "@ui-vts/theme/ui-vts";
+@import "@photo-sphere-viewer/core/index";
 // @import "@coreui/coreui-pro/scss/coreui";
-
 
 body {
   font-family: Sarabun;
+}
+h1 {
+  color: inherit !important;
+}
+.psv-marker--normal {
+  background-position: center;
+}
+.psv-button {
+  color: #fff;
+  background-color: #ee0033;
+  border-radius: 50%;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.psv-navbar {
+  margin-bottom: 16px;
+  margin-top: 16px;
+  background: none;
+  position: absolute;
+  bottom: 0;
+}
+.psv-gallery {
+  background-color: transparent;
+  border-bottom: none;
+}
+.psv-gallery-item-thumb {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+.psv-gallery-item-wrapper {
+  width: 100px;
+  height: 30px;
+}
+.psv-gallery-item--active::after {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: transparent;
+}
+
+.psv-gallery-item-title {
+  border-radius: 5px;
+  width: 100px;
+  min-height: 20px;
+  padding: 0;
+  background: linear-gradient(180deg, #cc4d4c 0%, rgba(138, 61, 65, 0.3) 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  position: absolute;
+  top: 108px;
+}
+.psv-gallery-item-title:hover {
+  height: 100px;
+}
+.psv-gallery-item {
+  width: 100px;
+  height: unset;
+  color: transparent;
+}
+.psv-zoom-range {
+  display: none;
+}
+.psv-move-button {
+  margin-left: 8px !important;
+}
+.psv-gallery-container {
+  margin-bottom: 40px;
+}
+.psv-caption {
+  background: transparent;
+  border-radius: 8px;
+}
+.psv-video-time {
+  width: unset;
+}
+.psv-video-progressbar {
+  margin-bottom: 32px;
+}
+.psv-settings-badge {
+  background-color: #fff;
+  color: #ee0033;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+// menu
+.mat-mdc-menu-panel {
+  max-width: 320px !important;
+}
+.mat-mdc-menu-content {
+  background-color: #fff;
+  padding: 16px !important;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
 }

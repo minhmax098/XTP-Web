@@ -11,7 +11,6 @@ import { CommonModule } from "@angular/common";
 })
 export class MarkerComponent implements OnInit, AfterViewInit {
   constructor(private renderer: Renderer2) {}
-
   ngOnInit(): void {}
   @ViewChild("markerRed") markerRed: ElementRef;
   ngAfterViewInit(): void {

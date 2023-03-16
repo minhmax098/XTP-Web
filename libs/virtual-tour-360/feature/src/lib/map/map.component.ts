@@ -1,176 +1,298 @@
-import { MarkerComponent } from "./../../../../ui/src/lib/marker/marker.component";
+import { CommonModule } from "@angular/common";
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
+  Injector,
   OnInit,
   ViewChild,
-  ElementRef,
-  Renderer2,
-  AfterViewInit,
 } from "@angular/core";
-import { CommonModule } from "@angular/common";
-
+import { createCustomElement } from "@angular/elements";
+import * as $ from "jquery";
+import { LanguagePickerComponent } from "./../../../../ui/src/lib/language-picker/language-picker.component";
+import { MapStylePickerComponent } from "./../../../../ui/src/lib/map-style-picker/map-style-picker.component";
+import { MarkerContentComponent } from "./../../../../ui/src/lib/marker-content/marker-content.component";
+import { MarkerComponent } from "./../../../../ui/src/lib/marker/marker.component";
+import { SearchResultComponent } from "./../../../../ui/src/lib/search-result/search-result.component";
+import { SearchComponent } from "./../../../../ui/src/lib/search/search.component";
+import { MapService } from "./../services/map.service";
 declare var vtmapgl: any;
+
 @Component({
   selector: "virtual-tour-feature-map",
   standalone: true,
-  imports: [CommonModule, MarkerComponent],
+  imports: [
+    CommonModule,
+    MarkerComponent,
+    LanguagePickerComponent,
+    SearchComponent,
+    MarkerContentComponent,
+    SearchResultComponent,
+    MapStylePickerComponent,
+  ],
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
 })
 export class MapComponent implements OnInit, AfterViewInit {
-  constructor(private renderer: Renderer2) {}
   @ViewChild("mapContainer") mapContainer: ElementRef;
-  // @ViewChild(MarkerComponent, { static: true }) marker: MarkerComponent;
-  @ViewChild("marker1") marker1: MarkerComponent;
-  @ViewChild("marker2") marker2: MarkerComponent;
-  @ViewChild("marker3") marker3: MarkerComponent;
-  ngOnInit(): void {}
-  ngAfterViewInit(): void {
-    vtmapgl.accessToken = "acfda3fa21ccc80fc6946681c4d6729f";
-    const map = new vtmapgl.Map({
+  accessToken: string = "acfda3fa21ccc80fc6946681c4d6729f";
+  digitizedLocations: any;
+  map: any;
+  searchResultItems = [];
+  searchResultMarkers: any[] = [];
+  isLoadTools = false;
+  geocoderService = new vtmapgl.GeocoderAPIService({
+    accessToken: this.accessToken,
+  });
+
+  constructor(
+    private digitizedLocationsAPI: MapService,
+    private injector: Injector
+  ) {
+    const popUpContent = createCustomElement(MarkerContentComponent, {
+      injector: injector,
+    });
+    customElements.define("virtual-tour-ui-marker-content", popUpContent);
+  }
+
+  ngOnInit(): void {
+    this.digitizedLocationsAPI.getDigitizedLocations().subscribe((res: any) => {
+      this.digitizedLocations = res.data;
+    });
+  }
+  initMap() {
+    vtmapgl.accessToken = this.accessToken;
+    this.map = new vtmapgl.Map({
       container: this.mapContainer.nativeElement,
-      style: vtmapgl.STYLES.NORMAL,
+      style: vtmapgl.STYLES.VADMIN,
       center: [108.2022, 16.0544], // tọa độ trung tâm [lng, lat]
       zoom: 5, // mức zoom
       minZoom: 1,
     });
-    // add navigation control
+  }
 
-    map.addControl(new vtmapgl.NavigationControl(), "bottom-right");
-    // ----------------------------------
-    (map as any).on("load", () => {
-      // add marker to map
-      console.log("hello", this.marker1.markerRed.nativeElement);
-      new vtmapgl.Marker({
-        element: this.marker1.markerRed.nativeElement,
-      })
-        .setPopup(new vtmapgl.Popup().setHTML("<h1>Da Nang City</h1>"))
-        .setLngLat([108.2022, 16.0544])
-        .addTo(map);
+  addBaseMarkers() {
+    // add cluster marker icon
+    const clusterMarkerIcon = new Image(40, 40);
+    clusterMarkerIcon.onload = () =>
+      this.map.addImage("cluster-marker-icon", clusterMarkerIcon);
+    clusterMarkerIcon.src = "/assets/template/map/icons/cluster-marker.svg";
+    // add un-cluster marker icon
+    const mapMarkerIcon = new Image(40, 40);
+    mapMarkerIcon.onload = () =>
+      this.map.addImage("map-marker-icon", mapMarkerIcon);
+    mapMarkerIcon.src = "/assets/template/map/icons/uncluster-marker.svg";
+  }
 
-      new vtmapgl.Marker({
-        element: this.marker2.markerRed.nativeElement,
-      })
-        .setPopup(new vtmapgl.Popup().setHTML("<h1>Ho Chi Minh City</h1>"))
-        .setLngLat([106.6297, 10.8231])
-        .addTo(map);
-      new vtmapgl.Marker({
-        element: this.marker3.markerRed.nativeElement,
-      })
-        .setPopup(new vtmapgl.Popup().setHTML("<h1>Ha Noi City</h1>"))
-        .setLngLat([105.8342, 21.0278])
-        .addTo(map);
-
-      // ----------------------------------
-      (map as any).addSource("earthquakes", {
-        type: "geojson",
-        // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
-        // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-        data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
-        cluster: true,
-        clusterMaxZoom: 3, // Max zoom to cluster points on
-        clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
-      });
-      (map as any).addLayer({
-        id: "clusters",
-        type: "circle",
-        source: "earthquakes",
-        filter: ["has", "point_count"],
-        paint: {
-          // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-          // with three steps to implement three types of circles:
-          //   * Blue, 20px circles when point count is less than 100
-          //   * Yellow, 30px circles when point count is between 100 and 750
-          //   * Pink, 40px circles when point count is greater than or equal to 750
-          "circle-color": [
-            "step",
-            ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1",
-          ],
-          "circle-radius": [
-            "step",
-            ["get", "point_count"],
-            20,
-            100,
-            30,
-            750,
-            40,
-          ],
-        },
-      });
-      (map as any).addLayer({
-        id: "cluster-count",
-        type: "symbol",
-        source: "earthquakes",
-        filter: ["has", "point_count"],
-        layout: {
-          "text-field": ["get", "point_count_abbreviated"],
-          "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
-          "text-size": 12,
-        },
-      });
-      (map as any).addLayer({
-        id: "unclustered-point",
-        type: "circle",
-        source: "earthquakes",
-        filter: ["!", ["has", "point_count"]],
-        paint: {
-          "circle-color": "#11b4da",
-          "circle-radius": 4,
-          "circle-stroke-width": 1,
-          "circle-stroke-color": "#fff",
-        },
-      });
-      // inspect a cluster on click
-      (map as any).on("click", "clusters", (e: any) => {
-        const features = (map as any).queryRenderedFeatures(e.point, {
-          layers: ["clusters"],
-        });
-        const clusterId = features[0].properties.cluster_id;
-        (map as any)
-          .getSource("earthquakes")
-          .getClusterExpansionZoom(clusterId, (err: any, zoom: any) => {
-            if (err) return;
-
-            (map as any).easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom,
-            });
-          });
-      });
-
-      // When a click event occurs on a feature in
-      // the unclustered-point layer, open a popup at
-      // the location of the feature, with
-      // description HTML from its properties.
-      (map as any).on("click", "unclustered-point", (e: any) => {
-        const coordinates = e.features[0].geometry.coordinates.slice();
-        const mag = e.features[0].properties.mag;
-        const tsunami = e.features[0].properties.tsunami === 1 ? "yes" : "no";
-
-        // Ensure that if the map is zoomed out such that
-        // multiple copies of the feature are visible, the
-        // popup appears over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        new vtmapgl.Popup()
-          .setLngLat(coordinates)
-          .setHTML(`magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`)
-          .addTo(map);
-      });
-
-      (map as any).on("mouseenter", "clusters", () => {
-        (map as any).getCanvas().style.cursor = "pointer";
-      });
-      (map as any).on("mouseleave", "clusters", () => {
-        (map as any).getCanvas().style.cursor = "";
-      });
+  add360Locations() {
+    // add source data
+    this.map.addSource("digitizedLocations", {
+      type: "geojson",
+      data: this.digitizedLocations,
+      cluster: true,
+      clusterMaxZoom: 14, // Max zoom to cluster points on
+      clusterRadius: 50, // Radius of each cluster when clustering points (defaults to 50)
     });
+    // add layer
+    this.map.addLayer({
+      id: "clusters",
+      type: "symbol",
+      source: "digitizedLocations",
+      filter: ["has", "point_count"],
+      layout: {
+        "icon-image": "cluster-marker-icon",
+        "icon-allow-overlap": true,
+      },
+    });
+    this.map.addLayer({
+      id: "cluster-count",
+      type: "symbol",
+      source: "digitizedLocations",
+      filter: ["has", "point_count"],
+      layout: {
+        "text-field": ["get", "point_count_abbreviated"],
+        "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+        "text-size": 20,
+        "text-line-height": 1,
+      },
+      paint: {
+        "text-color": "#fff",
+      },
+    });
+    this.map.addLayer({
+      id: "unclustered-point",
+      type: "symbol",
+      source: "digitizedLocations",
+      filter: ["!", ["has", "point_count"]],
+      layout: {
+        "icon-image": "map-marker-icon",
+        "icon-allow-overlap": true,
+      },
+    });
+    // inspect a cluster on click
+    this.map.on("click", "clusters", (e: any) => {
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: ["clusters"],
+      });
+      const clusterId = features[0].properties.cluster_id;
+      this.map
+        .getSource("digitizedLocations")
+        .getClusterExpansionZoom(clusterId, (err: any, zoom: any) => {
+          if (err) return;
+
+          this.map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: zoom,
+          });
+        });
+    });
+
+    this.map.on("click", "unclustered-point", (e: any) => {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const title = e.features[0].properties.name;
+      const description = e.features[0].properties.description;
+      const id = e.features[0].properties.id;
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+      new vtmapgl.Popup({
+        closeButton: false,
+      })
+        .setLngLat(coordinates)
+        .setHTML(
+          `<virtual-tour-ui-marker-content id="${id}" title="${title}" description="${description}" btn_experience="Trải nghiệm 360"></virtual-tour-ui-marker-content>`
+        )
+        .addTo(this.map);
+    });
+
+    this.map.on("mouseenter", "clusters", () => {
+      this.map.getCanvas().style.cursor = "pointer";
+    });
+    this.map.on("mouseleave", "clusters", () => {
+      this.map.getCanvas().style.cursor = "";
+    });
+  }
+  ngAfterViewInit(): void {
+    this.initMap();
+
+    this.map.on("load", () => {
+      this.addBaseMarkers();
+      this.add360Locations();
+      // add navigation control
+      this.map.addControl(new vtmapgl.NavigationControl(), "bottom-right");
+      this.isLoadTools = true;
+    });
+    console.log("data", this.digitizedLocations);
+    // ----------------------------------
+    // this.map.on("load", () => {
+    // add marker to map
+    // for (let i = 0; i < this.fixedPoints.length; i++) {
+    //   const marker = new vtmapgl.Marker({
+    //     element: this.markers.toArray()[i].markerRed.nativeElement,
+    //   })
+    //     .setPopup(
+    //       new vtmapgl.Popup({
+    //         closeButton: false,
+    //         maxWidth: "300px",
+    //       }).setHTML(`<h1>${this.fixedPoints[i].City}</h1>`)
+    //     )
+    //     .setLngLat(this.fixedPoints[i].Location)
+    //     .addTo(map);
+    //   (map as any).on("zoomend", () => {
+    //     console.log("zoom level", map.getZoom());
+    //     if (map.getZoom() < 5) {
+    //       marker.remove();
+    //     } else {
+    //       marker.addTo(map);
+    //     }
+    //   });
+    // }
+    // });
+  }
+
+  getPopupHtml(item: any) {
+    return `<div style="font-weight: bold;border-bottom: solid 1px lightgray;padding: 8px 0;">${
+      item.name == null ? "" : item.name
+    } 
+    </div>
+                    <div style="margin-top: 8px;">
+                        <span style="font-weight: bold">Địa chỉ: </span>
+                        <span>${
+                          item.address == null ? "N/A" : item.address
+                        }</span>
+                    </div>
+
+                    <div>
+                        <span style="font-weight: bold">Phone: </span>
+                        <span>${item.phone == null ? "N/A" : item.phone}</span>
+                    </div>
+
+                    <div>
+                        <span style="font-weight: bold">Email: </span>
+                        <span>${item.mail == null ? "N/A" : item.mail}</span>
+                    </div>
+                `;
+  }
+
+  removeMarkers(markers: any[]) {
+    markers.forEach((item: any) => {
+      item.remove();
+    });
+    this.searchResultMarkers = [];
+  }
+
+  removePopups(markers: any) {
+    markers.forEach((item: any) => {
+      item.getPopup().remove();
+    });
+  }
+
+  handleSearchResultItemClick(index: any) {
+    const selectedItem = this.searchResultItems[parseInt(index)];
+    if (selectedItem) {
+      const coordinate = (selectedItem as any).location;
+      this.map.flyTo({
+        center: [coordinate.lng, coordinate.lat],
+        zoom: this.map.getZoom(),
+      });
+      this.removePopups(this.searchResultMarkers);
+
+      this.searchResultMarkers[parseInt(index)].getPopup().addTo(this.map);
+    }
+  }
+
+  handleSearchTextChange(searchText: any) {
+    this.geocoderService.fetchTextToAddress(
+      searchText,
+      0,
+      10,
+      (result: any, status: any) => {
+        this.searchResultItems = result.items;
+        const total = result.total;
+        this.removeMarkers(this.searchResultMarkers);
+        if (this.searchResultItems && this.searchResultItems.length > 0) {
+          const bounds = new vtmapgl.LngLatBounds();
+          $(".result-count").html(
+            `Tìm thấy <strong>${this.searchResultItems.length}/${total}</strong> kết quả`
+          );
+          this.searchResultItems.forEach((item: any) => {
+            const coordinate = item.location;
+            const marker = new vtmapgl.Marker();
+            marker.setLngLat([coordinate.lng, coordinate.lat]);
+            marker.setPopup(
+              new vtmapgl.Popup({ closeButton: false }).setHTML(
+                this.getPopupHtml(item)
+              )
+            );
+            marker.addTo(this.map);
+            this.searchResultMarkers.push(marker);
+            bounds.extend([coordinate.lng, coordinate.lat]);
+            this.map.fitBounds(bounds, { padding: 50 });
+          });
+        } else {
+          $(".result-count").html("Không tìm thấy kết quả!");
+        }
+      }
+    );
   }
 }

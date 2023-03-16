@@ -1,0 +1,57 @@
+<div #tourContainer [ngStyle]="{ height: '100vh', width: '100vw' }"></div>
+<div
+  #infoPopperButton
+  mat-button
+  [matMenuTriggerFor]="menu"
+  [ngStyle]="{ position: 'absolute', top: '8px', right: '8px' }"
+></div>
+<mat-menu #menu="matMenu">
+  <div class="info-title">
+    Tượng Cá chép hoá rồng - Biểu tượng du lịch Đà Thành
+  </div>
+  <div class="info-divider"></div>
+  <div class="info-content">
+    Cá chép là một linh vật rất có ý nghĩa đối với người Á Đông. Đây là con vật
+    biểu tượng cho sức mạnh, may mắn và quyền uy. Ngoài ra, rồng còn có biểu
+    tượng như có thể bay lên trời, lặn xuống biển ở cả phương Đông và phương
+    Tây. Theo truyền thuyết dân gian kể lại, xưa có một cuộc thi tuyển rồng ở
+    trời. Khi tất cả các con vật đều tham gia và không qua cửa Vũ Môn thì chỉ có
+    duy nhất một con cá chép vượt qua và hóa thành rồng. Từ đó, câu chuyện được
+    lưu truyền cho tới ngày hôm nay. Tượng cá chép hóa rồng Đà Nẵng cũng được
+    dựng lên theo truyền thuyết này.
+  </div>
+  <div class="info-action">
+    <button class="info-button">Xem các địa điểm gần đây</button>
+  </div>
+</mat-menu>
+
+<div *ngIf="isShowMap" class="nearby-locations-map-popup-container">
+  <div id="nearbyLocationsMapContainer" class="nearby-locations-map-popup">
+    <mat-drawer-container
+      class="nearby-locations-map-popup-sidebar-container"
+      autosize
+    >
+      <mat-drawer #drawer mode="side" class="sidebar">
+        <div class="search-container">
+          <virtual-tour-ui-search
+            [items]="searchResultItems"
+            placeholder="Nhập địa điểm tìm kiếm"
+            searchIcon="assets/template/map/icons/uncluster-marker.svg"
+            (onSearchTextChange)="handleSearchTextChange($event)"
+            (onSearchResultItemClick)="handleSearchResultItemClick($event)"
+          ></virtual-tour-ui-search>
+        </div>
+      </mat-drawer>
+    </mat-drawer-container>
+    <div
+      #nearbyLocationsBtnSidebar
+      class="nearby-locations-map-popup-btn-sidebar"
+      mat-button
+      (click)="handleSidebarButtonClick()"
+    ></div>
+    <div
+      class="nearby-locations-map-popup-btn-close"
+      (click)="handleCloseMapPopup()"
+    ></div>
+  </div>
+</div>

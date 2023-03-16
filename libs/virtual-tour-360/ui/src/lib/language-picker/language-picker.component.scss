@@ -1,0 +1,22 @@
+.language-picker-container {
+  position: absolute;
+  top: 16px;
+  right: 0px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 12px 12px;
+  border-radius: 4px;
+}
+.language-container {
+  margin-right: 2px;
+}
+.language {
+  background-size: contain;
+  height: 24px;
+  width: 24px;
+
+  cursor: pointer;
+  color: transparent;
+}

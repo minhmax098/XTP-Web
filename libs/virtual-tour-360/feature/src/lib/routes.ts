@@ -6,6 +6,18 @@ export const ROUTES: Route[] = [
     // component: LayoutComponent,
     children: [
       {
+        path: "video-tour",
+        loadComponent: () =>
+          import("./video-tour/video-tour.component").then(
+            (c) => c.VideoTourComponent
+          ),
+      },
+      {
+        path: "tour/:id",
+        loadComponent: () =>
+          import("./tour/tour.component").then((c) => c.TourComponent),
+      },
+      {
         path: "map",
         loadComponent: () =>
           import("./map/map.component").then((c) => c.MapComponent),

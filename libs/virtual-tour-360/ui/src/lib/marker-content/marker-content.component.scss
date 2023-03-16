@@ -1,0 +1,41 @@
+.marker-content-container {
+  padding: 8px;
+}
+.marker-content-title {
+  font-size: 16px;
+  font-family: "Sarabun";
+  font-weight: 900;
+  text-align: center;
+}
+.marker-content-description {
+  margin-top: 8px;
+  font-size: 14px;
+  font-family: "Sarabun";
+  font-weight: 500;
+  text-align: justify;
+}
+.marker-content-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+.marker-content-button {
+  width: 150px;
+  padding: 6px 20px;
+  color: #fff;
+  background-color: #e03;
+  border: none;
+  border-radius: 5px;
+  border: 1px solid #e03;
+  cursor: pointer;
+  font-family: "Sarabun";
+  font-size: 14px;
+}
+.marker-content-button:hover {
+  color: #e03;
+  background-color: #fff;
+}
+.marker-content-button:active {
+  color: #fff;
+  background-color: #e03;
+}

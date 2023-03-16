@@ -1,4 +1,14 @@
 <div #mapContainer [ngStyle]="{ height: '100vh', width: '100vw' }"></div>
-<virtual-tour-ui-marker #marker1></virtual-tour-ui-marker>
-<virtual-tour-ui-marker #marker2></virtual-tour-ui-marker>
-<virtual-tour-ui-marker #marker3></virtual-tour-ui-marker>
+<div *ngIf="isLoadTools">
+  <div class="search-container">
+    <virtual-tour-ui-search
+      [items]="searchResultItems"
+      placeholder="Nhập địa điểm tìm kiếm"
+      searchIcon="assets/template/map/icons/uncluster-marker.svg"
+      (onSearchTextChange)="handleSearchTextChange($event)"
+      (onSearchResultItemClick)="handleSearchResultItemClick($event)"
+    ></virtual-tour-ui-search>
+  </div>
+  <virtual-tour-ui-language-picker></virtual-tour-ui-language-picker>
+  <virtual-tour-ui-map-style-picker></virtual-tour-ui-map-style-picker>
+</div>

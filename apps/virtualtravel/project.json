@@ -28,6 +28,14 @@
           }
         ],
         "styles": [
+          "./node_modules/@photo-sphere-viewer/core/index.scss",
+          "./node_modules/@photo-sphere-viewer/markers-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/compass-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/gallery-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/virtual-tour-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/video-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/map-plugin/index.scss",
+          "./node_modules/@photo-sphere-viewer/settings-plugin/index.scss",
           "apps/virtualtravel/src/styles/global.scss"
         ],
         "scripts": [],

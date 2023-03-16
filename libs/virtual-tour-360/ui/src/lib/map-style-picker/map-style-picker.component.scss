@@ -1,0 +1,25 @@
+.map-style-picker {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 124px;
+  right: 10px;
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: transparent;
+}
+.map-style-picker:hover {
+  background-color: #fff;
+  opacity: 0.85;
+}
+.map-style-picker-icon {
+  background-image: url("/assets/template/map/icons/map-style-picker.svg");
+  width: 15px;
+  height: 15px;
+  background-size: contain;
+}
