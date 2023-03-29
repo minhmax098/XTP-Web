@@ -1,0 +1,27 @@
+.tag-container {
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80px;
+  padding: 8px;
+  padding-top: 16px;
+}
+.tag-container:hover {
+  background-color: rgba($color: #dbdbdb, $alpha: 1);
+}
+.tag-name {
+  font-family: "Sarabun";
+  font-size: 12px;
+  width: 100%;
+  height: 30px;
+  text-align: center;
+  line-height: 25px;
+  font-weight: 500;
+}
+.tag-icon-container {
+  display: flex;
+  justify-content: center;
+}
+.tag-icon {
+  width: 24px;
+  height: 24px;
+}

@@ -1,30 +1,36 @@
 <div #tourContainer [ngStyle]="{ height: '100vh', width: '100vw' }"></div>
+<div *ngIf="isShowModel" class="model-3d-container">
+  <model></model>
+  <div class="model-3d-btn-close" (click)="handleClose3DModel()"></div>
+</div>
 <div
-  #infoPopperButton
   mat-button
   [matMenuTriggerFor]="menu"
   [ngStyle]="{ position: 'absolute', top: '8px', right: '8px' }"
 ></div>
 <mat-menu #menu="matMenu">
-  <div class="info-title">
-    Tượng Cá chép hoá rồng - Biểu tượng du lịch Đà Thành
+  <div
+    class="info-container"
+    *ngIf="tourData?.name.length > 0 || tourData?.description > 0"
+  >
+    <div class="info-title">
+      {{ tourData?.name }}
+    </div>
+    <div class="info-divider"></div>
+    <div class="info-content">
+      {{ tourData?.description }}
+    </div>
+    <div class="info-action">
+      <button class="info-button">Xem các địa điểm gần đây</button>
+    </div>
   </div>
-  <div class="info-divider"></div>
-  <div class="info-content">
-    Cá chép là một linh vật rất có ý nghĩa đối với người Á Đông. Đây là con vật
-    biểu tượng cho sức mạnh, may mắn và quyền uy. Ngoài ra, rồng còn có biểu
-    tượng như có thể bay lên trời, lặn xuống biển ở cả phương Đông và phương
-    Tây. Theo truyền thuyết dân gian kể lại, xưa có một cuộc thi tuyển rồng ở
-    trời. Khi tất cả các con vật đều tham gia và không qua cửa Vũ Môn thì chỉ có
-    duy nhất một con cá chép vượt qua và hóa thành rồng. Từ đó, câu chuyện được
-    lưu truyền cho tới ngày hôm nay. Tượng cá chép hóa rồng Đà Nẵng cũng được
-    dựng lên theo truyền thuyết này.
-  </div>
-  <div class="info-action">
-    <button class="info-button">Xem các địa điểm gần đây</button>
+  <div
+    class="info-content"
+    *ngIf="tourData?.name.length <= 0 || tourData?.description <= 0"
+  >
+    Không có thông tin về địa điểm
   </div>
 </mat-menu>
-
 <div *ngIf="isShowMap" class="nearby-locations-map-popup-container">
   <div id="nearbyLocationsMapContainer" class="nearby-locations-map-popup">
     <mat-drawer-container
@@ -32,14 +38,91 @@
       autosize
     >
       <mat-drawer #drawer mode="side" class="sidebar">
-        <div class="search-container">
-          <virtual-tour-ui-search
-            [items]="searchResultItems"
-            placeholder="Nhập địa điểm tìm kiếm"
-            searchIcon="assets/template/map/icons/uncluster-marker.svg"
-            (onSearchTextChange)="handleSearchTextChange($event)"
-            (onSearchResultItemClick)="handleSearchResultItemClick($event)"
-          ></virtual-tour-ui-search>
+        <div class="filter-container">
+          <div class="filter-title">
+            <img
+              src="assets/template/map/icons/uncluster-marker.svg"
+              width="27px"
+              height="27px"
+            />
+            Tìm kiếm địa điểm xung quanh:
+          </div>
+          <div class="filter-subtitle">
+            <img
+              src="assets/template/map/icons/radius.png"
+              width="20px"
+              height="20px"
+            />
+            <div [ngStyle]="{ marginLeft: '8px' }">Bán kính (m):</div>
+          </div>
+          <div class="input-number-container">
+            <div class="icon-container">
+              <img
+                src="assets/template/map/icons/area.png"
+                alt="icon"
+                class="icon"
+              />
+            </div>
+            <p-inputNumber
+              class="input-number"
+              inputId="integeronly"
+              [(ngModel)]="radius"
+              placeholder="Bán kính tìm kiếm"
+              [min]="1"
+              [max]="99999"
+              (onInput)="handleInputRadiusChange()"
+            >
+            </p-inputNumber>
+          </div>
+          <div class="tag-container">
+            <div class="filter-subtitle">
+              <img
+                src="assets/template/map/icons/destination.png"
+                width="22px"
+                height="22px"
+              />
+              <div [ngStyle]="{ marginLeft: '8px' }">Loại hình:</div>
+            </div>
+            <div class="tag-sub-container">
+              <div *ngFor="let item of filterItems">
+                <virtual-tour-ui-tag
+                  [tagIcon]="item.iconSource"
+                  [tagName]="item.tagName"
+                  [isSelected]="item.isSelected"
+                  (onFilterItemClick)="handleFilterClick($event)"
+                ></virtual-tour-ui-tag>
+              </div>
+            </div>
+          </div>
+          <div class="filter-result">
+            <div class="filter-title">
+              <img
+                src="assets/template/map/icons/results.png"
+                width="18px"
+                height="18px"
+              />
+              <span [ngStyle]="{ paddingLeft: '12px' }">Kết quả tìm kiếm:</span>
+            </div>
+            <div *ngFor="let result of vtMapSearchResults; let i = index">
+              <div
+                class="nearby-result-container"
+                (click)="handleSearchResultItemClick(i)"
+              >
+                <div class="nearby-result-info">
+                  <div class="nearby-result-name">{{ result.name }}</div>
+                  <div class="nearby-result-address">{{ result.address }}</div>
+                  <div>{{ result.isExist360 }}</div>
+                </div>
+                <div class="nearby-result-360" *ngIf="result.isExist360">
+                  <img
+                    src="assets/template/map/icons/i360.svg"
+                    width="40px"
+                    height="40px"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </mat-drawer>
     </mat-drawer-container>

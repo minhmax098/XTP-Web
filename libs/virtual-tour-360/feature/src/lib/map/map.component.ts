@@ -4,7 +4,6 @@ import {
   Component,
   ElementRef,
   Injector,
-  OnInit,
   ViewChild,
 } from "@angular/core";
 import { createCustomElement } from "@angular/elements";
@@ -12,10 +11,10 @@ import * as $ from "jquery";
 import { LanguagePickerComponent } from "./../../../../ui/src/lib/language-picker/language-picker.component";
 import { MapStylePickerComponent } from "./../../../../ui/src/lib/map-style-picker/map-style-picker.component";
 import { MarkerContentComponent } from "./../../../../ui/src/lib/marker-content/marker-content.component";
-import { MarkerComponent } from "./../../../../ui/src/lib/marker/marker.component";
 import { SearchResultComponent } from "./../../../../ui/src/lib/search-result/search-result.component";
 import { SearchComponent } from "./../../../../ui/src/lib/search/search.component";
 import { MapService } from "./../services/map.service";
+import { digitizedLocationsInterface } from "./map";
 declare var vtmapgl: any;
 
 @Component({
@@ -23,7 +22,6 @@ declare var vtmapgl: any;
   standalone: true,
   imports: [
     CommonModule,
-    MarkerComponent,
     LanguagePickerComponent,
     SearchComponent,
     MarkerContentComponent,
@@ -33,14 +31,14 @@ declare var vtmapgl: any;
   templateUrl: "./map.component.html",
   styleUrls: ["./map.component.scss"],
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements AfterViewInit {
   @ViewChild("mapContainer") mapContainer: ElementRef;
-  accessToken: string = "acfda3fa21ccc80fc6946681c4d6729f";
-  digitizedLocations: any;
+  digitizedLocations: digitizedLocationsInterface;
   map: any;
   searchResultItems = [];
   searchResultMarkers: any[] = [];
   isLoadTools = false;
+  accessToken: string = "acfda3fa21ccc80fc6946681c4d6729f";
   geocoderService = new vtmapgl.GeocoderAPIService({
     accessToken: this.accessToken,
   });
@@ -52,19 +50,16 @@ export class MapComponent implements OnInit, AfterViewInit {
     const popUpContent = createCustomElement(MarkerContentComponent, {
       injector: injector,
     });
-    customElements.define("virtual-tour-ui-marker-content", popUpContent);
+    if (!customElements.get("virtual-tour-ui-marker-content")) {
+      customElements.define("virtual-tour-ui-marker-content", popUpContent);
+    }
   }
 
-  ngOnInit(): void {
-    this.digitizedLocationsAPI.getDigitizedLocations().subscribe((res: any) => {
-      this.digitizedLocations = res.data;
-    });
-  }
-  initMap() {
+  initMap(mapStyle: string = vtmapgl.STYLES.VTRANS) {
     vtmapgl.accessToken = this.accessToken;
     this.map = new vtmapgl.Map({
       container: this.mapContainer.nativeElement,
-      style: vtmapgl.STYLES.VADMIN,
+      style: mapStyle,
       center: [108.2022, 16.0544], // tọa độ trung tâm [lng, lat]
       zoom: 5, // mức zoom
       minZoom: 1,
@@ -172,42 +167,27 @@ export class MapComponent implements OnInit, AfterViewInit {
       this.map.getCanvas().style.cursor = "";
     });
   }
+
   ngAfterViewInit(): void {
     this.initMap();
-
     this.map.on("load", () => {
       this.addBaseMarkers();
-      this.add360Locations();
+      if (this.digitizedLocations) {
+        this.add360Locations();
+      } else {
+        this.digitizedLocationsAPI.getDigitizedLocations().subscribe({
+          next: (result: any) => {
+            this.digitizedLocations = result.data;
+            this.add360Locations();
+          },
+          error: (error: any) => console.error("error:", error),
+          complete: () => {},
+        });
+      }
       // add navigation control
       this.map.addControl(new vtmapgl.NavigationControl(), "bottom-right");
       this.isLoadTools = true;
     });
-    console.log("data", this.digitizedLocations);
-    // ----------------------------------
-    // this.map.on("load", () => {
-    // add marker to map
-    // for (let i = 0; i < this.fixedPoints.length; i++) {
-    //   const marker = new vtmapgl.Marker({
-    //     element: this.markers.toArray()[i].markerRed.nativeElement,
-    //   })
-    //     .setPopup(
-    //       new vtmapgl.Popup({
-    //         closeButton: false,
-    //         maxWidth: "300px",
-    //       }).setHTML(`<h1>${this.fixedPoints[i].City}</h1>`)
-    //     )
-    //     .setLngLat(this.fixedPoints[i].Location)
-    //     .addTo(map);
-    //   (map as any).on("zoomend", () => {
-    //     console.log("zoom level", map.getZoom());
-    //     if (map.getZoom() < 5) {
-    //       marker.remove();
-    //     } else {
-    //       marker.addTo(map);
-    //     }
-    //   });
-    // }
-    // });
   }
 
   getPopupHtml(item: any) {
@@ -241,7 +221,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.searchResultMarkers = [];
   }
 
-  removePopups(markers: any) {
+  removePopups(markers: any[]) {
     markers.forEach((item: any) => {
       item.getPopup().remove();
     });
@@ -294,5 +274,19 @@ export class MapComponent implements OnInit, AfterViewInit {
         }
       }
     );
+  }
+
+  handleStylePickerClick(style: string) {
+    this.map.remove();
+    this.initMap(vtmapgl.STYLES[`${style}`]);
+    this.map.on("load", () => {
+      this.addBaseMarkers();
+      if (this.digitizedLocations) {
+        this.add360Locations();
+      }
+      // add navigation control
+      this.map.addControl(new vtmapgl.NavigationControl(), "bottom-right");
+      this.isLoadTools = true;
+    });
   }
 }

@@ -1,8 +1,10 @@
 .result-info {
   border-top: 1px solid #8f9294;
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px;
   cursor: pointer;
+}
+.result-info:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .result-name {
   font: "Sarabun";

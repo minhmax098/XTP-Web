@@ -1,5 +1,5 @@
 @import "./fonts";
-@import "@ui-vts/theme/ui-vts";
+@import "@ui-vts/theme/ui-vts.css";
 @import "@photo-sphere-viewer/core/index";
 // @import "@coreui/coreui-pro/scss/coreui";
 
@@ -8,6 +8,9 @@ body {
 }
 h1 {
   color: inherit !important;
+}
+div {
+  -webkit-user-select: none;
 }
 .psv-marker--normal {
   background-position: center;
@@ -102,4 +105,12 @@ h1 {
   padding: 16px !important;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
+}
+.mat-mdc-menu-panel.mat-mdc-menu-panel {
+  border-radius: 15px;
+}
+.p-inputnumber-input,
+.p-inputnumber-input:focus-visible {
+  border: none;
+  outline: none;
 }

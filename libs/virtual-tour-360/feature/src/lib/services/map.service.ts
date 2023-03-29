@@ -6,6 +6,6 @@ import { HttpClient } from "@angular/common/http";
 export class MapService {
   constructor(private http: HttpClient) {}
   getDigitizedLocations() {
-    return this.http.get("https://tour.xrcommunity.org/api/areas/geoJSON");
+    return this.http.get("https://tour.xrcommunity.org/api/projects/geoJSON");
   }
 }

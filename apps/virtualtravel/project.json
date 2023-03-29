@@ -36,6 +36,7 @@
           "./node_modules/@photo-sphere-viewer/video-plugin/index.scss",
           "./node_modules/@photo-sphere-viewer/map-plugin/index.scss",
           "./node_modules/@photo-sphere-viewer/settings-plugin/index.scss",
+          "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
           "apps/virtualtravel/src/styles/global.scss"
         ],
         "scripts": [],

@@ -1,0 +1,10 @@
+<div
+  class="tag-container"
+  (click)="handleFilterClick()"
+  [ngStyle]="getStyleOnFilter()"
+>
+  <div class="tag-icon-container">
+    <img class="tag-icon" [src]="tagIcon" alt="TagIcon" />
+  </div>
+  <div class="tag-name">{{ tagName }}</div>
+</div>

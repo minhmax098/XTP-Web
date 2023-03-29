@@ -14,6 +14,7 @@ export const ROUTES: Route[] = [
       },
       {
         path: "tour/:id",
+        pathMatch: "full",
         loadComponent: () =>
           import("./tour/tour.component").then((c) => c.TourComponent),
       },

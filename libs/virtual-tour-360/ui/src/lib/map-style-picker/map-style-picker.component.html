@@ -1,3 +1,18 @@
-<div class="map-style-picker">
+<div class="map-style-picker" [matMenuTriggerFor]="mapStyle">
   <div class="map-style-picker-icon"></div>
 </div>
+<mat-menu #mapStyle="matMenu">
+  <button mat-menu-item (click)="handleClickStylePicker('GSAT')">GSAT</button>
+  <button mat-menu-item (click)="handleClickStylePicker('GTRANS')">
+    GTRANS
+  </button>
+  <button mat-menu-item (click)="handleClickStylePicker('VADMIN')">
+    VADMIN
+  </button>
+  <button mat-menu-item (click)="handleClickStylePicker('VNIGHT')">
+    VNIGHT
+  </button>
+  <button mat-menu-item (click)="handleClickStylePicker('VTRANS')">
+    VTRANS
+  </button>
+</mat-menu>

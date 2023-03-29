@@ -19,6 +19,5 @@ export class SearchResultComponent implements OnInit {
 
   handleResultItemClick() {
     this.on_result_item_click.emit(this.item_index);
-    console.log(this.item_index, this.item_name, this.item_address);
   }
 }

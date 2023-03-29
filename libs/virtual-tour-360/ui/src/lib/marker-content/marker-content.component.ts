@@ -19,6 +19,10 @@ export class MarkerContentComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
   ngAfterViewInit() {}
   navigateToTour() {
-    this._router.navigateByUrl(`/virtual-tour/tour/${this.id}`);
+    console.log("hello vo day");
+    setTimeout(
+      () => this._router.navigateByUrl(`/virtual-tour/tour/${this.id}`),
+      0
+    );
   }
 }

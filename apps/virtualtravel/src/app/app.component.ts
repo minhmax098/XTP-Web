@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'viettelweb-root',
-  templateUrl: './app.component.html',
+  selector: "viettelweb-root",
+  templateUrl: "./app.component.html",
 })
 export class AppComponent {
-  title = 'Demoapp';
+  title = "Demo Application";
 }

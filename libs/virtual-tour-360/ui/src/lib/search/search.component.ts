@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   @Output()
   onSearchTextChange: EventEmitter<string> = new EventEmitter<string>();
   @Output()
-  onSearchResultItemClick: EventEmitter<string> = new EventEmitter<string>();
+  onSearchResultItemClick: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
 
@@ -33,7 +33,7 @@ export class SearchComponent implements OnInit {
     this.isShowSearchResult = false;
   }
 
-  handleSearchResultItemClick(index: any) {
+  handleSearchResultItemClick(index: number) {
     this.isShowSearchResult = false;
     this.onSearchResultItemClick.emit(index);
   }

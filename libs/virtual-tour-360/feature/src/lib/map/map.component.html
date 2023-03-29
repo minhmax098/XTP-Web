@@ -10,5 +10,7 @@
     ></virtual-tour-ui-search>
   </div>
   <virtual-tour-ui-language-picker></virtual-tour-ui-language-picker>
-  <virtual-tour-ui-map-style-picker></virtual-tour-ui-map-style-picker>
+  <virtual-tour-ui-map-style-picker
+    (onStylePickerClick)="handleStylePickerClick($event)"
+  ></virtual-tour-ui-map-style-picker>
 </div>

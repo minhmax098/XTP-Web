@@ -1,58 +1,151 @@
-import { ActivatedRoute } from "@angular/router";
-import { TourService } from "./../services/tour.service";
-import { SearchComponent } from "./../../../../ui/src/lib/search/search.component";
 import { CommonModule } from "@angular/common";
 import {
   AfterViewInit,
   Component,
   ElementRef,
+  Injector,
   OnInit,
-  ViewChild,
   Renderer2,
+  ViewChild,
 } from "@angular/core";
+import { createCustomElement } from "@angular/elements";
+import { FormsModule } from "@angular/forms";
 import { MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AutorotatePlugin } from "@photo-sphere-viewer/autorotate-plugin";
 import { CompassPlugin } from "@photo-sphere-viewer/compass-plugin";
 import { Viewer } from "@photo-sphere-viewer/core";
 import { GalleryPlugin } from "@photo-sphere-viewer/gallery-plugin";
 import { MarkersPlugin } from "@photo-sphere-viewer/markers-plugin";
 import { VirtualTourPlugin } from "@photo-sphere-viewer/virtual-tour-plugin";
-import { MatSidenavModule } from "@angular/material/sidenav";
 import * as $ from "jquery";
+import { InputNumberModule } from "primeng/inputnumber";
+import { AnModule } from "thanhlee-3dview";
+import { MarkerContentComponent } from "./../../../../ui/src/lib/marker-content/marker-content.component";
+import { SearchComponent } from "./../../../../ui/src/lib/search/search.component";
+import { TagComponent } from "./../../../../ui/src/lib/tag/tag.component";
+import { TourService } from "./../services/tour.service";
 declare var vtmapgl: any;
 @Component({
   selector: "virtual-tour-feature-tour",
   standalone: true,
-  imports: [CommonModule, MatMenuModule, MatSidenavModule, SearchComponent],
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    MatSidenavModule,
+    InputNumberModule,
+    SearchComponent,
+    TagComponent,
+    AnModule,
+    FormsModule,
+    MarkerContentComponent,
+  ],
   templateUrl: "./tour.component.html",
   styleUrls: ["./tour.component.scss"],
 })
 export class TourComponent implements OnInit, AfterViewInit {
   @ViewChild("tourContainer") tourContainer: ElementRef;
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-  @ViewChild("infoPopperButton") infoPopperButton: ElementRef;
   @ViewChild("nearbyLocationsBtnSidebar") sidebarBtn: ElementRef;
   @ViewChild("drawer") sidebar: ElementRef;
 
-  accessToken: string = "acfda3fa21ccc80fc6946681c4d6729f";
   baseUrl = "https://photo-sphere-viewer-data.netlify.app/assets/";
+
+  accessToken: string = "acfda3fa21ccc80fc6946681c4d6729f";
+  geocoderService = new vtmapgl.GeocoderAPIService({
+    accessToken: this.accessToken,
+  });
+  static map: any;
+  static markers = [];
+  circle: any;
+  listSelectedLocationTypes: number[] = [];
+  static popup: any;
+  radius: number = 1;
   isShowMap = false;
+  isShowModel = false;
   isSidebarOpen = false;
-  searchResultItems: any[];
   tourData: any;
+  filterItems: any[] = [
+    {
+      iconSource: "assets/template/map/icons/icon_restaurant.png",
+      tagName: "Nhà hàng",
+      isSelected: false,
+      value: 25,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_hotel.png",
+      tagName: "Khách sạn",
+      isSelected: false,
+      value: 13,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_cafe.png",
+      tagName: "Cà phê",
+      isSelected: false,
+      value: 17,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_atm.png",
+      tagName: "ATM",
+      isSelected: false,
+      value: 18,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_supermarket.png",
+      tagName: "Siêu thị",
+      isSelected: false,
+      value: 27,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_street_food.png",
+      tagName: "Ăn vặt",
+      isSelected: false,
+      value: 25,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_bank.png",
+      tagName: "Ngân hàng",
+      isSelected: false,
+      value: 21,
+    },
+    {
+      iconSource: "assets/template/map/icons/icon_post.png",
+      tagName: "Bưu điện",
+      isSelected: false,
+      value: 26,
+    },
+  ];
+  vtMapSearchResults: any;
+  vrSearchResults: any;
+  nearbyLocations: any;
 
   constructor(
     private renderer: Renderer2,
     private tourAPI: TourService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private _router: Router,
+    private injector: Injector
+  ) {
+    // route.params.subscribe((val) => {
+    //   // put the code from `ngOnInit` here
+    // });
+    this._router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
+    const popUpContent = createCustomElement(MarkerContentComponent, {
+      injector: injector,
+    });
+    if (!customElements.get("virtual-tour-ui-marker-content")) {
+      customElements.define("virtual-tour-ui-marker-content", popUpContent);
+    }
+  }
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     const viewer = new Viewer({
       container: this.tourContainer.nativeElement,
-      panorama: this.baseUrl + "sphere.jpg",
       loadingImg: "/assets/template/map/icons/loading.gif",
       plugins: [
         [
@@ -94,7 +187,7 @@ export class TourComponent implements OnInit, AfterViewInit {
         [
           GalleryPlugin,
           {
-            visibleOnLoad: true,
+            visibleOnLoad: false,
             thumbnailSize: { width: 100, height: 100 },
           },
         ],
@@ -154,7 +247,7 @@ export class TourComponent implements OnInit, AfterViewInit {
 </svg>
 `,
           onClick: () => {
-            console.log("VR Clicked");
+            this.initModel();
           },
           className: "psv-button--hover-scale",
         },
@@ -178,350 +271,96 @@ export class TourComponent implements OnInit, AfterViewInit {
     const markerPlugin = viewer.getPlugin(MarkersPlugin);
     this.tourAPI
       .getTourById(parseInt(this.route.snapshot.paramMap.get("id") as string))
-      .subscribe((res: any) => {
-        this.tourData = res.data;
-        // @ts-ignore
-        // virtualTour.setNodes(this.tourData?.nodes, this.tourData?.nodes[0].id);
-        markerPlugin.addEventListener(
-          "select-marker",
-          ({ marker, doubleClick, rightClick }) => {
-            console.log(`Clicked on marker ${marker.id}`);
-          }
-        );
+      .subscribe({
+        next: (res: any) => {
+          this.tourData = res.data;
+          // @ts-ignore
+          virtualTour.setNodes(
+            this.tourData?.nodes,
+            this.tourData?.nodes[0]?.id
+          );
+          markerPlugin.addEventListener(
+            "select-marker",
+            ({ marker, doubleClick, rightClick }) => {
+              this._router.navigateByUrl("/virtual-tour/tour/7");
+              console.log(`Clicked on marker ${marker?.id}`);
+            }
+          );
+        },
+        error: (error: any) => console.error("error:", error),
+        complete: () => {},
       });
+  }
 
-    //@ts-ignore
-    virtualTour.setNodes(
-      [
-        {
-          id: 1,
-          panorama: "/assets/template/map/images/KhanhHoa/1.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/1.jpg",
-          name: "One",
-          links: [
-            {
-              id: 1,
-              name: null,
-              position: {
-                yaw: "210deg",
-                pitch: "0deg",
-              },
-              nodeId: 2,
-            },
-          ],
-          markers: [
-            {
-              id: 1,
-              position: {
-                yaw: "90deg",
-                pitch: "15deg",
-              },
-              size: {
-                width: 250,
-                height: 250,
-              },
-              scale: {
-                zoom: [0.3, 1],
-                yaw: [1, 1.5],
-              },
-              image:
-                "https://api.xrcommunity.org/minio/api/v1/buckets/thanh/objects/download?preview=true&prefix=VHJhbmdfQW4vYWlyLWhvdC1iYWxsb29uLmdpZg==&version_id=2627f844-fab3-4f64-b9a7-612231ff804e",
-              tooltip: "Đường Phố",
-              anchor: "center center",
-              data: { affiliateProject: 2 },
-            },
-          ],
-          description: "Description 1",
-          caption: "Caption 1",
-          panoData: { poseHeading: 327 },
-        },
-        {
-          id: 2,
-          panorama: "/assets/template/map/images/KhanhHoa/2.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/2.jpg",
-          name: "Two",
-          links: [
-            {
-              id: 2,
-              name: null,
-              position: {
-                yaw: "30deg",
-                pitch: "0deg",
-              },
-              nodeId: 1,
-            },
-            {
-              id: 3,
-              name: null,
-              position: {
-                yaw: "-145deg",
-                pitch: "0deg",
-              },
-              nodeId: 3,
-            },
-          ],
-          description: "Description 2",
-          caption: "Caption 2",
-          panoData: { poseHeading: 318 },
-        },
-        {
-          id: 3,
-          panorama: "/assets/template/map/images/KhanhHoa/3.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/3.jpg",
-          name: "Three",
-          links: [
-            {
-              id: 4,
-              name: null,
-              position: {
-                yaw: "-220deg",
-                pitch: "0deg",
-              },
-              nodeId: 4,
-            },
-            {
-              id: 5,
-              name: null,
-              position: {
-                yaw: "-130deg",
-                pitch: "0deg",
-              },
-              nodeId: 5,
-            },
-            {
-              id: 6,
-              name: null,
-              position: {
-                yaw: "-40deg",
-                pitch: "0deg",
-              },
-              nodeId: 6,
-            },
-            {
-              id: 7,
-              name: null,
-              position: {
-                yaw: "40deg",
-                pitch: "0deg",
-              },
-              nodeId: 2,
-            },
-          ],
-          markers: [],
-          description: "Description 3",
-          caption: "Caption 3",
-          panoData: { poseHeading: 328 },
-        },
-        {
-          id: 4,
-          panorama: "/assets/template/map/images/KhanhHoa/4.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/4.jpg",
-          name: "Four",
-          links: [
-            {
-              id: 8,
-              name: null,
-              position: {
-                yaw: "60deg",
-                pitch: "0deg",
-              },
-              nodeId: 3,
-            },
-          ],
-          markers: [],
-          description: "Description 4",
-          caption: "Caption 4",
-          panoData: { poseHeading: 78 },
-        },
-        {
-          id: 5,
-          panorama: "/assets/template/map/images/KhanhHoa/5.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/5.jpg",
-          name: "Five",
-          links: [
-            {
-              id: 9,
-              name: null,
-              position: {
-                yaw: "270deg",
-                pitch: "0deg",
-              },
-              nodeId: 3,
-            },
-            {
-              id: 10,
-              name: null,
-              position: {
-                yaw: "85deg",
-                pitch: "0deg",
-              },
-              nodeId: 7,
-            },
-          ],
-          markers: [],
-          description: "Description 5",
-          caption: "Caption 5",
-          panoData: { poseHeading: 190 },
-        },
-        {
-          id: 6,
-          panorama: "/assets/template/map/images/KhanhHoa/7.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/7.jpg",
-          name: "Six",
-          markers: [],
-          links: [
-            {
-              id: 11,
-              name: null,
-              position: {
-                yaw: "95deg",
-                pitch: "0deg",
-              },
-              nodeId: 3,
-            },
-          ],
-          description: "Description 6",
-          caption: "Caption 6",
-          panoData: { poseHeading: 328 },
-        },
-        {
-          id: 7,
-          panorama: "/assets/template/map/images/KhanhHoa/8.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/8.jpg",
-          name: "Seven",
-          links: [
-            {
-              id: 12,
-              name: null,
-              position: {
-                yaw: "-35deg",
-                pitch: "0deg",
-              },
-              nodeId: 5,
-            },
-            {
-              id: 13,
-              name: null,
-              position: {
-                yaw: "150deg",
-                pitch: "0deg",
-              },
-              nodeId: 8,
-            },
-          ],
-          markers: [],
-          description: "Description 7",
-          caption: "Caption 7",
-          panoData: { poseHeading: 250 },
-        },
-        {
-          id: 8,
-          panorama: "/assets/template/map/images/KhanhHoa/9.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/9.jpg",
-          name: "Eight",
-          links: [
-            {
-              id: 14,
-              name: null,
-              position: {
-                yaw: "-35deg",
-                pitch: "0deg",
-              },
-              nodeId: 7,
-            },
-            {
-              id: 15,
-              name: null,
-              position: {
-                yaw: "-200deg",
-                pitch: "0deg",
-              },
-              nodeId: 9,
-            },
-          ],
-          markers: [],
-          description: "Description 8",
-          caption: "Caption 8",
-          panoData: { poseHeading: 250 },
-        },
-        {
-          id: 9,
-          panorama: "/assets/template/map/images/KhanhHoa/10.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/10.jpg",
-          name: "Nine",
-          links: [
-            {
-              id: 16,
-              name: null,
-              position: {
-                yaw: "-35deg",
-                pitch: "0deg",
-              },
-              nodeId: 8,
-            },
-            {
-              id: 17,
-              name: null,
-              position: {
-                yaw: "-200deg",
-                pitch: "0deg",
-              },
-              nodeId: 10,
-            },
-          ],
-          markers: [],
-          description: "Description 9",
-          caption: "Caption 9",
-          panoData: { poseHeading: 250 },
-        },
-        {
-          id: 10,
-          panorama: "/assets/template/map/images/KhanhHoa/11.jpg",
-          thumbnail: "/assets/template/map/images/KhanhHoa/11.jpg",
-          name: "ten",
-          links: [
-            {
-              id: 18,
-              name: null,
-              position: {
-                yaw: "-35deg",
-                pitch: "0deg",
-              },
-              nodeId: 9,
-            },
-          ],
-          markers: [],
-          description: "Description 10",
-          caption: "Caption 10",
-          panoData: { poseHeading: 250 },
-        },
-      ],
-      1
-    );
+  initModel() {
+    this.isShowModel = true;
+    $(function () {
+      document.getElementById("canvas-box")!.style.position = "absolute";
+      document.getElementById("vr-button")!.style.transform =
+        "translate(calc(1vw),95vh)";
+      document.getElementById("vr-text1")!.style.transform =
+        "translate(calc(1vw + 40px),95vh)";
+      document.getElementById("exitvr-text1")!.style.left = "50%";
+      document.getElementById("exitvr-text1")!.style.transform =
+        "translateX(-50%)";
+    });
   }
 
   initMap() {
     this.isShowMap = true;
     vtmapgl.accessToken = this.accessToken;
+    const marker = new vtmapgl.Marker();
+    marker.setLngLat(this.tourData.coordinates);
+    const lng = this.tourData.coordinates[0];
+    const lat = this.tourData.coordinates[1];
     $(function () {
       let mapTemp = new vtmapgl.Map({
         container: document.getElementById("nearbyLocationsMapContainer"),
         style: vtmapgl.STYLES.VADMIN,
-        center: [108.2022, 16.0544], // tọa độ trung tâm [lng, lat]
+        center: [lng, lat], // tọa độ trung tâm [lng, lat]
         zoom: 12, // mức zoom
         minZoom: 1,
       });
       mapTemp.on("load", () => {
+        marker.addTo(mapTemp);
         mapTemp.addControl(new vtmapgl.NavigationControl(), "bottom-right");
       });
+      TourComponent.map = mapTemp;
     });
   }
 
   handleCloseMapPopup() {
     this.isShowMap = false;
+    this.isSidebarOpen = false;
   }
-  handleSearchTextChange(data: any) {}
-  handleSearchResultItemClick(data: any) {}
+  handleClose3DModel() {
+    this.isShowModel = false;
+  }
+
+  static removePopups(markers: any[]) {
+    markers.forEach((item: any) => {
+      console.log("remove", (item as any).getPopup());
+      console.log("item", item);
+      (item as any).getPopup()?.remove();
+    });
+  }
+
+  handleSearchResultItemClick(index: number) {
+    const selectedItem = this.vtMapSearchResults[index];
+    console.log("selectedItem", selectedItem);
+    if (selectedItem) {
+      const coordinate = (selectedItem as any).location;
+      console.log("tour", TourComponent.map);
+      TourComponent.map.flyTo({
+        center: [coordinate.lng, coordinate.lat],
+        zoom: 50,
+      });
+      TourComponent.removePopups(TourComponent.markers);
+      (TourComponent.markers[index] as any)
+        .getPopup()
+        ?.addTo(TourComponent.map);
+    }
+  }
   handleSidebarButtonClick() {
     this.isSidebarOpen = !this.isSidebarOpen;
     (this.sidebar as any).toggle();
@@ -531,16 +370,190 @@ export class TourComponent implements OnInit, AfterViewInit {
         "background-image",
         "url(/assets/template/map/icons/btn-sidebar-close.svg)"
       );
-      console.log(this.sidebarBtn);
       this.renderer.setStyle(this.sidebarBtn.nativeElement, "left", "348px");
+      // this.updateCircle(this.radius);
+      // this.searchAround();
     } else {
       this.renderer.setStyle(
         this.sidebarBtn.nativeElement,
         "background-image",
         "url(/assets/template/map/icons/btn-sidebar.svg)"
       );
-      console.log(this.sidebarBtn);
       this.renderer.setStyle(this.sidebarBtn.nativeElement, "left", "0");
+    }
+  }
+  handleFilterClick(data: any): void {
+    this.filterItems.forEach((item) => {
+      if (item.tagName == data) {
+        item.isSelected = !item.isSelected;
+        if (item.isSelected) {
+          this.listSelectedLocationTypes?.push(item.value);
+        } else {
+          this.listSelectedLocationTypes?.splice(
+            this.listSelectedLocationTypes?.indexOf(item.value),
+            1
+          );
+        }
+      }
+    });
+    this.searchAround();
+  }
+
+  handleInputRadiusChange(): void {
+    this.updateCircle(this.radius < 99999 ? this.radius : 99999);
+    this.searchAround();
+  }
+
+  updateCircle(radius: any) {
+    radius = radius === null || radius <= 0 ? 1 : radius;
+    if (this.circle) {
+      this.circle.remove();
+    }
+    if (this.tourData?.coordinates) {
+      this.circle = new vtmapgl.Circle({
+        center: [this.tourData?.coordinates[0], this.tourData?.coordinates[1]],
+        radius: radius,
+        fillColor: "red",
+        fillOpacity: 0.3,
+      }).addTo(TourComponent.map);
+    }
+  }
+
+  static removeMarkers(markers: any) {
+    markers.forEach((item: any) => {
+      item.remove();
+    });
+    TourComponent.markers = [];
+  }
+
+  static getPopupHtml(item: any) {
+    return `
+                    <div style="font-weight: bold;border-bottom: solid 1px lightgray;padding: 8px 0;">${
+                      item.name == null ? "" : item.name
+                    }</div>
+                    <div style="margin-top: 8px;">
+                        <span style="font-weight: bold">Địa chỉ: </span>
+                        <span>${
+                          item.address == null ? "N/A" : item.address
+                        }</span>
+                    </div>
+
+                    <div>
+                        <span style="font-weight: bold">Phone: </span>
+                        <span>${item.phone == null ? "N/A" : item.phone}</span>
+                    </div>
+
+                    <div>
+                        <span style="font-weight: bold">Email: </span>
+                        <span>${item.mail == null ? "N/A" : item.mail}</span>
+                    </div>
+                `;
+  }
+  isExist360() {
+    return true;
+  }
+
+  searchAround() {
+    if (this.listSelectedLocationTypes.length === 0) {
+      this.listSelectedLocationTypes.push(0);
+    }
+    if (
+      this.listSelectedLocationTypes.length > 1 &&
+      this.listSelectedLocationTypes.includes(0)
+    ) {
+      this.listSelectedLocationTypes.splice(
+        this.listSelectedLocationTypes.indexOf(0),
+        1
+      );
+    }
+    if (this.radius === null) {
+      this.radius = 1;
+    }
+    if (this.radius !== null) {
+      var search_text = "";
+      this.geocoderService.fetchSearchAround(
+        [this.tourData.coordinates[1], this.tourData.coordinates[0]]?.join(","),
+        this.radius,
+        this.listSelectedLocationTypes,
+        search_text,
+        0,
+        50,
+        (result: any, status: any) => {
+          if (status == 0) {
+            this.tourAPI
+              .getNearByLocations(
+                this.tourData.coordinates[0],
+                this.tourData.coordinates[1],
+                this.radius,
+                this.listSelectedLocationTypes
+              )
+              .subscribe({
+                next: (res: any) => {
+                  this.vrSearchResults = res.data;
+                },
+                error: () => {},
+                complete: () => {},
+              });
+            TourComponent.removeMarkers(TourComponent.markers);
+
+            this.vtMapSearchResults = result.items;
+            this.vtMapSearchResults?.forEach(
+              (mapResult: any, index: number) => {
+                this.vtMapSearchResults[index].isExist360 = false;
+                this.vrSearchResults?.forEach((vrResult: any) => {
+                  if (
+                    Math.abs(vrResult.coordinates[0] - mapResult.location.lng) <
+                      0.0001 &&
+                    Math.abs(vrResult.coordinates[1] - mapResult.location.lat) <
+                      0.0001
+                  ) {
+                    this.vtMapSearchResults[index].isExist360 = true;
+                  }
+                });
+              }
+            );
+            this.vtMapSearchResults.forEach((item: any, index: number) => {
+              if (this.vtMapSearchResults[index].isExist360) {
+                this.vrSearchResults?.forEach((vrResult: any) => {
+                  if (
+                    Math.abs(vrResult.coordinates[0] - item.location.lng) <
+                      0.0001 &&
+                    Math.abs(vrResult.coordinates[1] - item.location.lat) <
+                      0.0001
+                  ) {
+                    const el = document.createElement("div");
+                    el.style.backgroundImage = `url("/assets/template/map/icons/map-marker-red.gif")`;
+                    el.style.width = "40px";
+                    el.style.height = "40px";
+                    el.style.backgroundSize = "contain";
+                    const marker = new vtmapgl.Marker(el);
+                    marker.setLngLat([item.location.lng, item.location.lat]);
+                    marker.addTo(TourComponent.map);
+                    marker.setPopup(
+                      new vtmapgl.Popup({
+                        closeButton: false,
+                      }).setHTML(
+                        `<virtual-tour-ui-marker-content id="${vrResult.id}" title="${vrResult?.name}" description="${vrResult.description}" btn_experience="Trải nghiệm 360"></virtual-tour-ui-marker-content>`
+                      )
+                    );
+                    (TourComponent.markers as any).push(marker);
+                  }
+                });
+              } else {
+                const marker = new vtmapgl.Marker();
+                marker.setLngLat([item.location.lng, item.location.lat]);
+                marker.addTo(TourComponent.map);
+                marker.setPopup(
+                  new vtmapgl.Popup({
+                    closeButton: false,
+                  }).setHTML(TourComponent.getPopupHtml(item))
+                );
+                (TourComponent.markers as any).push(marker);
+              }
+            });
+          }
+        }
+      );
     }
   }
 }
