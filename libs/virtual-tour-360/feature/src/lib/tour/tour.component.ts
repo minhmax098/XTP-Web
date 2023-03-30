@@ -56,11 +56,10 @@ export class TourComponent implements OnInit, AfterViewInit {
   geocoderService = new vtmapgl.GeocoderAPIService({
     accessToken: this.accessToken,
   });
-  static map: any;
-  static markers = [];
+  map: any;
+  markers = [];
   circle: any;
   listSelectedLocationTypes: number[] = [];
-  static popup: any;
   radius: number = 1;
   isShowMap = false;
   isShowModel = false;
@@ -127,9 +126,6 @@ export class TourComponent implements OnInit, AfterViewInit {
     private _router: Router,
     private injector: Injector
   ) {
-    // route.params.subscribe((val) => {
-    //   // put the code from `ngOnInit` here
-    // });
     this._router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -283,7 +279,6 @@ export class TourComponent implements OnInit, AfterViewInit {
             "select-marker",
             ({ marker, doubleClick, rightClick }) => {
               this._router.navigateByUrl("/virtual-tour/tour/7");
-              console.log(`Clicked on marker ${marker?.id}`);
             }
           );
         },
@@ -313,7 +308,7 @@ export class TourComponent implements OnInit, AfterViewInit {
     marker.setLngLat(this.tourData.coordinates);
     const lng = this.tourData.coordinates[0];
     const lat = this.tourData.coordinates[1];
-    $(function () {
+    $(() => {
       let mapTemp = new vtmapgl.Map({
         container: document.getElementById("nearbyLocationsMapContainer"),
         style: vtmapgl.STYLES.VADMIN,
@@ -325,7 +320,7 @@ export class TourComponent implements OnInit, AfterViewInit {
         marker.addTo(mapTemp);
         mapTemp.addControl(new vtmapgl.NavigationControl(), "bottom-right");
       });
-      TourComponent.map = mapTemp;
+      this.map = mapTemp;
     });
   }
 
@@ -337,28 +332,22 @@ export class TourComponent implements OnInit, AfterViewInit {
     this.isShowModel = false;
   }
 
-  static removePopups(markers: any[]) {
+  removePopups(markers: any[]) {
     markers.forEach((item: any) => {
-      console.log("remove", (item as any).getPopup());
-      console.log("item", item);
       (item as any).getPopup()?.remove();
     });
   }
 
   handleSearchResultItemClick(index: number) {
     const selectedItem = this.vtMapSearchResults[index];
-    console.log("selectedItem", selectedItem);
     if (selectedItem) {
       const coordinate = (selectedItem as any).location;
-      console.log("tour", TourComponent.map);
-      TourComponent.map.flyTo({
+      this.map.flyTo({
         center: [coordinate.lng, coordinate.lat],
         zoom: 50,
       });
-      TourComponent.removePopups(TourComponent.markers);
-      (TourComponent.markers[index] as any)
-        .getPopup()
-        ?.addTo(TourComponent.map);
+      this.removePopups(this.markers);
+      (this.markers[index] as any).getPopup()?.addTo(this.map);
     }
   }
   handleSidebarButtonClick() {
@@ -415,18 +404,18 @@ export class TourComponent implements OnInit, AfterViewInit {
         radius: radius,
         fillColor: "red",
         fillOpacity: 0.3,
-      }).addTo(TourComponent.map);
+      }).addTo(this.map);
     }
   }
 
-  static removeMarkers(markers: any) {
+  removeMarkers(markers: any) {
     markers.forEach((item: any) => {
       item.remove();
     });
-    TourComponent.markers = [];
+    this.markers = [];
   }
 
-  static getPopupHtml(item: any) {
+  getPopupHtml(item: any) {
     return `
                     <div style="font-weight: bold;border-bottom: solid 1px lightgray;padding: 8px 0;">${
                       item.name == null ? "" : item.name
@@ -448,9 +437,6 @@ export class TourComponent implements OnInit, AfterViewInit {
                         <span>${item.mail == null ? "N/A" : item.mail}</span>
                     </div>
                 `;
-  }
-  isExist360() {
-    return true;
   }
 
   searchAround() {
@@ -494,7 +480,7 @@ export class TourComponent implements OnInit, AfterViewInit {
                 error: () => {},
                 complete: () => {},
               });
-            TourComponent.removeMarkers(TourComponent.markers);
+            this.removeMarkers(this.markers);
 
             this.vtMapSearchResults = result.items;
             this.vtMapSearchResults?.forEach(
@@ -528,7 +514,7 @@ export class TourComponent implements OnInit, AfterViewInit {
                     el.style.backgroundSize = "contain";
                     const marker = new vtmapgl.Marker(el);
                     marker.setLngLat([item.location.lng, item.location.lat]);
-                    marker.addTo(TourComponent.map);
+                    marker.addTo(this.map);
                     marker.setPopup(
                       new vtmapgl.Popup({
                         closeButton: false,
@@ -536,19 +522,19 @@ export class TourComponent implements OnInit, AfterViewInit {
                         `<virtual-tour-ui-marker-content id="${vrResult.id}" title="${vrResult?.name}" description="${vrResult.description}" btn_experience="Trải nghiệm 360"></virtual-tour-ui-marker-content>`
                       )
                     );
-                    (TourComponent.markers as any).push(marker);
+                    (this.markers as any).push(marker);
                   }
                 });
               } else {
                 const marker = new vtmapgl.Marker();
                 marker.setLngLat([item.location.lng, item.location.lat]);
-                marker.addTo(TourComponent.map);
+                marker.addTo(this.map);
                 marker.setPopup(
                   new vtmapgl.Popup({
                     closeButton: false,
-                  }).setHTML(TourComponent.getPopupHtml(item))
+                  }).setHTML(this.getPopupHtml(item))
                 );
-                (TourComponent.markers as any).push(marker);
+                (this.markers as any).push(marker);
               }
             });
           }
